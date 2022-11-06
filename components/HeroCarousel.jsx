@@ -28,7 +28,7 @@ function HeroCarousel() {
       arrows={false}
       infinite
     >
-      <div className="h-80 w-full">
+      <div className="h-80 w-full relative">
         <Image
           src={"https://source.unsplash.com/random/?coffeshop"}
           alt="Hero Image"
@@ -37,7 +37,7 @@ function HeroCarousel() {
           className="object-cover h-full w-full"
         />
       </div>
-      <div className="h-80 w-full">
+      <div className="h-80 w-full relative">
         <Image
           src={"https://source.unsplash.com/random/?coffe"}
           alt="Hero Image"

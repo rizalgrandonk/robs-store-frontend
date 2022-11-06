@@ -16,7 +16,7 @@ function Navigation() {
             "0 -4px 6px -1px rgb(0 0 0 / 0.1), 0 -2px 4px -2px rgb(0 0 0 / 0.1)",
         }}
       >
-        <Link legacyBehavior href="/">
+        <Link legacyBehavior href="/admin">
           <a className="focus:text-primary hover:text-primary flex flex-col justify-between items-center">
             <span className="text-3xl">
               <MdHome />
@@ -24,7 +24,7 @@ function Navigation() {
             <span className="block text-sm">Beranda</span>
           </a>
         </Link>
-        <Link legacyBehavior href="/order">
+        <Link legacyBehavior href="/admin/order">
           <a className="focus:text-primary hover:text-primary flex flex-col justify-between items-center">
             <span className="text-3xl">
               <MdContentPaste />
@@ -32,7 +32,7 @@ function Navigation() {
             <span className="block text-sm">Pesanan</span>
           </a>
         </Link>
-        <Link legacyBehavior href="/menu">
+        <Link legacyBehavior href="/admin/menu">
           <a className="focus:text-primary hover:text-primary flex flex-col justify-between items-center">
             <span className="text-3xl">
               <MdMenuBook />
@@ -40,7 +40,7 @@ function Navigation() {
             <span className="block text-sm">Menu</span>
           </a>
         </Link>
-        <Link legacyBehavior href="/profile">
+        <Link legacyBehavior href="/admin/profile">
           <a className="focus:text-primary hover:text-primary flex flex-col justify-between items-center">
             <span className="text-3xl">
               <MdOutlinePersonOutline />

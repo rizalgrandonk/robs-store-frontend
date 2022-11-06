@@ -4,8 +4,8 @@ import MenuCarousel from "../../components/MenuCarousel";
 
 function Dashboard() {
   return (
-    <main className="pb-16 pt-[4.5rem]">
-      <div className="px-4 bg-primary">
+    <main className="pb-16">
+      <div className="px-4 bg-primary pt-[4.5rem]">
         <div className="rounded-t-3xl relative overflow-hidden">
           <HeroCarousel />
           <div className="w-full px-8 py-14 flex justify-between items-center bg-white absolute bottom-0 rounded-t-[2rem]">
