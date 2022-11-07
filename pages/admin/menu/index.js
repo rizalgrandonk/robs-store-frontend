@@ -35,7 +35,7 @@ function Menu() {
         </div>
       </div>
       <div className="space-y-4">
-        <div className="p-2 flex items-center rounded-md bg-white gap-4 drop-shadow-md">
+        <div className="p-2 flex items-center rounded-md bg-white gap-4 drop-shadow">
           <div className="w-28 h-24 relative overflow-hidden">
             <Image
               src={"https://source.unsplash.com/random/?americano"}
@@ -59,7 +59,7 @@ function Menu() {
             </span>
           </div>
         </div>
-        <div className="p-2 flex items-center rounded-md bg-white gap-4 drop-shadow-md">
+        <div className="p-2 flex items-center rounded-md bg-white gap-4 drop-shadow">
           <div className="w-28 h-24 relative overflow-hidden">
             <Image
               src={"https://source.unsplash.com/random/?latte"}
