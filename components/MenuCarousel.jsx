@@ -34,6 +34,7 @@ function MenuCarousel() {
             alt="Menu Image"
             fill
             loading="lazy"
+            sizes="50vw"
             className="object-cover h-full w-full"
           />
         </div>
@@ -50,6 +51,7 @@ function MenuCarousel() {
             alt="Menu Image"
             fill
             loading="lazy"
+            sizes="50vw"
             className="object-cover h-full w-full"
           />
         </div>

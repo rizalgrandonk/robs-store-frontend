@@ -34,6 +34,7 @@ function HeroCarousel() {
           alt="Hero Image"
           fill
           loading="lazy"
+          sizes="100vw"
           className="object-cover h-full w-full"
         />
       </div>
@@ -43,6 +44,7 @@ function HeroCarousel() {
           alt="Hero Image"
           fill
           loading="lazy"
+          sizes="100vw"
           className="object-cover h-full w-full"
         />
       </div>

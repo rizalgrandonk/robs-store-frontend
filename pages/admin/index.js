@@ -1,5 +1,6 @@
 import { MdContentPaste, MdMenuBook, MdQrCodeScanner } from "react-icons/md";
 import HeroCarousel from "../../components/HeroCarousel";
+import Layout from "../../components/Layout";
 import MenuCarousel from "../../components/MenuCarousel";
 
 function Dashboard() {
@@ -53,5 +54,9 @@ function Dashboard() {
     </main>
   );
 }
+
+Dashboard.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
 
 export default Dashboard;

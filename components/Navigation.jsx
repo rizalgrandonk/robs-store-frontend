@@ -24,7 +24,7 @@ function Navigation() {
             <span className="block text-sm">Beranda</span>
           </a>
         </Link>
-        <Link legacyBehavior href="/admin/order">
+        <Link legacyBehavior href="/admin/pesanan">
           <a className="focus:text-primary hover:text-primary flex flex-col justify-between items-center">
             <span className="text-3xl">
               <MdContentPaste />

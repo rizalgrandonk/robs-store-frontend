@@ -7,6 +7,8 @@ import {
   MdSort,
 } from "react-icons/md";
 
+import Layout from "../../../components/Layout";
+
 function Menu() {
   return (
     <main className="pb-16 pt-[4.5rem] px-4 bg-gray-50 min-h-screen">
@@ -40,6 +42,7 @@ function Menu() {
               alt="Menu Image"
               fill
               loading="lazy"
+              sizes="50vw"
               className="object-cover h-full w-full"
             />
           </div>
@@ -51,7 +54,7 @@ function Menu() {
             <span className="text-rose-600 text-2xl p-1.5 border border-gray-500">
               <MdOutlineDelete />
             </span>
-            <span className="text-gray-600 text-2xl p-1.5 border border-gray-500">
+            <span className="text-secondary text-2xl p-1.5 border border-gray-500">
               <MdOutlineEdit />
             </span>
           </div>
@@ -63,6 +66,7 @@ function Menu() {
               alt="Menu Image"
               fill
               loading="lazy"
+              sizes="50vw"
               className="object-cover h-full w-full"
             />
           </div>
@@ -74,7 +78,7 @@ function Menu() {
             <span className="text-rose-600 text-2xl p-1.5 border border-gray-500">
               <MdOutlineDelete />
             </span>
-            <span className="text-gray-600 text-2xl p-1.5 border border-gray-500">
+            <span className="text-secondary text-2xl p-1.5 border border-gray-500">
               <MdOutlineEdit />
             </span>
           </div>
@@ -83,5 +87,9 @@ function Menu() {
     </main>
   );
 }
+
+Menu.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
 
 export default Menu;
