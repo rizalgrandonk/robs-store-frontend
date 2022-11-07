@@ -1,6 +1,38 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 import logo from "../../public/logo.png";
-function login() {
+
+function Login() {
+  const { loginUser, isAuthenticated } = useAuth();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/admin");
+    }
+  }, [isAuthenticated, router]);
+
+  const [userData, setUserData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setUserData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    loginUser(userData);
+    router.push("/admin");
+  };
+
   return (
     <main className="bg-primary h-screen">
       <div
@@ -17,7 +49,10 @@ function login() {
         />
       </div>
 
-      <form className="px-14 py-12 flex flex-col items-center gap-5">
+      <form
+        onSubmit={handleSubmit}
+        className="px-14 py-12 flex flex-col items-center gap-5"
+      >
         <div className="w-full flex flex-col gap-0">
           <label htmlFor="username" className="text-lg font-medium">
             Username
@@ -27,6 +62,7 @@ function login() {
             id="username"
             name="username"
             className="rounded-md text-lg border-none"
+            onChange={handleChange}
           />
         </div>
         <div className="w-full flex flex-col gap-0">
@@ -38,6 +74,7 @@ function login() {
             id="password"
             name="password"
             className="rounded-md text-lg border-none"
+            onChange={handleChange}
           />
         </div>
         <button
@@ -51,4 +88,4 @@ function login() {
   );
 }
 
-export default login;
+export default Login;

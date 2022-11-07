@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   MdContentPaste,
   MdHome,
@@ -7,6 +8,8 @@ import {
 } from "react-icons/md";
 
 function Navigation() {
+  const { pathname } = useRouter();
+
   return (
     <nav className="block fixed inset-x-0 bottom-0 z-10 text-gray-500 px-2">
       <div
@@ -17,7 +20,11 @@ function Navigation() {
         }}
       >
         <Link legacyBehavior href="/admin">
-          <a className="focus:text-primary hover:text-primary flex flex-col justify-between items-center">
+          <a
+            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
+              pathname === "/admin" ? "text-primary" : ""
+            }`}
+          >
             <span className="text-3xl">
               <MdHome />
             </span>
@@ -25,7 +32,11 @@ function Navigation() {
           </a>
         </Link>
         <Link legacyBehavior href="/admin/pesanan">
-          <a className="focus:text-primary hover:text-primary flex flex-col justify-between items-center">
+          <a
+            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
+              pathname === "/admin/pesanan" ? "text-primary" : ""
+            }`}
+          >
             <span className="text-3xl">
               <MdContentPaste />
             </span>
@@ -33,7 +44,11 @@ function Navigation() {
           </a>
         </Link>
         <Link legacyBehavior href="/admin/menu">
-          <a className="focus:text-primary hover:text-primary flex flex-col justify-between items-center">
+          <a
+            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
+              pathname === "/admin/menu" ? "text-primary" : ""
+            }`}
+          >
             <span className="text-3xl">
               <MdMenuBook />
             </span>
@@ -41,7 +56,11 @@ function Navigation() {
           </a>
         </Link>
         <Link legacyBehavior href="/admin/profile">
-          <a className="focus:text-primary hover:text-primary flex flex-col justify-between items-center">
+          <a
+            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
+              pathname === "/admin/profile" ? "text-primary" : ""
+            }`}
+          >
             <span className="text-3xl">
               <MdOutlinePersonOutline />
             </span>

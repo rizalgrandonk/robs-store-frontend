@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { MdOutlineArrowBack } from "react-icons/md";
+import { MdLogout, MdOutlineArrowBack } from "react-icons/md";
+import { useAuth } from "../contexts/AuthContext";
 
 function Avatar() {
   return (
@@ -33,10 +34,20 @@ function Nav() {
 }
 
 function Header() {
-  const { asPath, query } = useRouter();
+  const { logoutUser } = useAuth();
+  const router = useRouter();
+  const { pathname } = router;
+
+  const handleLogOut = () => {
+    logoutUser();
+    router.push("/auth/login");
+  };
   return (
-    <header className="fixed inset-x-0 top-0 z-10 bg-primary p-4 shadow-md">
-      {asPath === "/admin" ? <Avatar /> : <Nav />}
+    <header className="flex justify-between items-center fixed inset-x-0 top-0 z-10 bg-primary p-4 shadow-md">
+      {pathname === "/admin" ? <Avatar /> : <Nav />}
+      <span onClick={handleLogOut} className="text-3xl text-gray-700">
+        <MdLogout />
+      </span>
     </header>
   );
 }
