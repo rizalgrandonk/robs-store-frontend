@@ -4,13 +4,15 @@ import { MdLogout, MdOutlineArrowBack } from "react-icons/md";
 import { useAuth } from "../contexts/AuthContext";
 
 function Avatar() {
+  const { user } = useAuth();
+  const avatar = user.username.split("")[0];
   return (
     <Link legacyBehavior href="/admin/profile">
       <a className="flex items-center gap-2">
         <div className="h-10 w-10 grid place-items-center bg-gray-500 text-gray-200 rounded-full tracking-normal leading-none">
-          U
+          {avatar}
         </div>
-        <p className="text-gray-800 font-medium text-lg">User 1234</p>
+        <p className="text-gray-800 font-medium text-lg">{user.username}</p>
       </a>
     </Link>
   );
