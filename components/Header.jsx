@@ -24,13 +24,19 @@ function Nav() {
   const page = paths[paths.length - 1];
   return (
     <div className="flex items-center gap-2">
-      <span
-        onClick={() => router.back()}
-        className="text-gray-800 font-medium text-4xl cursor-pointer"
-      >
-        <MdOutlineArrowBack />
-      </span>
-      <p className="text-gray-800 font-medium text-lg capitalize">{page}</p>
+      {page === "" ? (
+        <p className="text-gray-800 font-medium text-lg capitalize">{page}</p>
+      ) : (
+        <>
+          <span
+            onClick={() => router.back()}
+            className="text-gray-800 font-medium text-4xl cursor-pointer"
+          >
+            <MdOutlineArrowBack />
+          </span>
+          <p className="text-gray-800 font-medium text-lg capitalize">{page}</p>
+        </>
+      )}
     </div>
   );
 }

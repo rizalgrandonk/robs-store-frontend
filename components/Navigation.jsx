@@ -7,6 +7,29 @@ import {
   MdOutlinePersonOutline,
 } from "react-icons/md";
 
+const navLinks = [
+  {
+    title: "Beranda",
+    href: "/admin",
+    icon: MdHome,
+  },
+  {
+    title: "Pesanan",
+    href: "/admin/pesanan",
+    icon: MdContentPaste,
+  },
+  {
+    title: "Menu",
+    href: "/admin/menu",
+    icon: MdMenuBook,
+  },
+  {
+    title: "Profile",
+    href: "/admin/profile",
+    icon: MdOutlinePersonOutline,
+  },
+];
+
 function Navigation() {
   const { pathname } = useRouter();
 
@@ -19,54 +42,20 @@ function Navigation() {
             "0 -4px 6px -1px rgb(0 0 0 / 0.1), 0 -2px 4px -2px rgb(0 0 0 / 0.1)",
         }}
       >
-        <Link legacyBehavior href="/admin">
-          <a
-            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
-              pathname === "/admin" ? "text-primary" : ""
-            }`}
-          >
-            <span className="text-3xl">
-              <MdHome />
-            </span>
-            <span className="block text-sm">Beranda</span>
-          </a>
-        </Link>
-        <Link legacyBehavior href="/admin/pesanan">
-          <a
-            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
-              pathname === "/admin/pesanan" ? "text-primary" : ""
-            }`}
-          >
-            <span className="text-3xl">
-              <MdContentPaste />
-            </span>
-            <span className="block text-sm">Pesanan</span>
-          </a>
-        </Link>
-        <Link legacyBehavior href="/admin/menu">
-          <a
-            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
-              pathname === "/admin/menu" ? "text-primary" : ""
-            }`}
-          >
-            <span className="text-3xl">
-              <MdMenuBook />
-            </span>
-            <span className="block text-sm">Menu</span>
-          </a>
-        </Link>
-        <Link legacyBehavior href="/admin/profile">
-          <a
-            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
-              pathname === "/admin/profile" ? "text-primary" : ""
-            }`}
-          >
-            <span className="text-3xl">
-              <MdOutlinePersonOutline />
-            </span>
-            <span className="block text-sm">Profile</span>
-          </a>
-        </Link>
+        {navLinks.map((nav) => (
+          <Link key={nav.title} legacyBehavior href={nav.href}>
+            <a
+              className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
+                pathname === nav.href ? "text-primary" : ""
+              }`}
+            >
+              <span className="text-3xl">
+                <nav.icon />
+              </span>
+              <span className="block text-sm">{nav.title}</span>
+            </a>
+          </Link>
+        ))}
       </div>
     </nav>
   );
