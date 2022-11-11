@@ -6,6 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 function Avatar() {
   const { user } = useAuth();
   const avatar = user.username.split("")[0];
+
   return (
     <Link legacyBehavior href="/admin/profile">
       <a className="flex items-center gap-2">
@@ -25,7 +26,7 @@ function Nav() {
   return (
     <div className="flex items-center gap-2">
       {page === "" ? (
-        <p className="text-gray-800 font-medium text-lg capitalize">{page}</p>
+        <p className="text-gray-800 font-medium text-lg capitalize">Our Menu</p>
       ) : (
         <>
           <span
@@ -42,9 +43,8 @@ function Nav() {
 }
 
 function Header() {
-  const { logoutUser } = useAuth();
+  const { logoutUser, isAuthenticated } = useAuth();
   const router = useRouter();
-  const { pathname } = router;
 
   const handleLogOut = () => {
     logoutUser();
@@ -52,7 +52,7 @@ function Header() {
   };
   return (
     <header className="flex justify-between items-center fixed inset-x-0 top-0 z-10 bg-primary p-4 shadow-md">
-      {pathname === "/admin" ? <Avatar /> : <Nav />}
+      {isAuthenticated ? <Avatar /> : <Nav />}
       <span onClick={handleLogOut} className="text-3xl text-gray-700">
         <MdLogout />
       </span>

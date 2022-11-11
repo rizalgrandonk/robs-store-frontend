@@ -1,9 +1,6 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { MdContentPaste, MdMenuBook, MdQrCodeScanner } from "react-icons/md";
 import HeroCarousel from "../../components/HeroCarousel";
 import MenuCarousel from "../../components/MenuCarousel";
-import { useAuth } from "../../contexts/AuthContext";
 
 const riwayatPesanan = [
   {
@@ -29,24 +26,6 @@ const riwayatPesanan = [
 ];
 
 function Dashboard() {
-  const { isAuthenticated, user } = useAuth();
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/auth/login");
-    }
-  }, [isAuthenticated, router]);
-
-  if (!isAuthenticated || !user) {
-    return (
-      <div className="h-screen flex justify-center items-center">
-        <h2 className="text-2xl font-bold">Unauthorized</h2>
-      </div>
-    );
-  }
-
   return (
     <main className="pb-16">
       <div className="px-4 bg-primary pt-[4.5rem]">

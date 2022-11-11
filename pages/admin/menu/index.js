@@ -1,6 +1,4 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import {
   MdAdd,
   MdOutlineDelete,
@@ -8,8 +6,6 @@ import {
   MdOutlineFilterAlt,
   MdSort,
 } from "react-icons/md";
-
-import { useAuth } from "../../../contexts/AuthContext";
 
 const daftarMenu = [
   {
@@ -36,27 +32,13 @@ const daftarMenu = [
   {
     id: "4",
     name: "Espresso",
-    image: "https://source.unsplash.com/random/?Espresso",
+    image: "https://source.unsplash.com/random/?espresso",
     sales: 1000,
     price: 12000,
   },
 ];
 
 function Menu() {
-  const { isAuthenticated, user } = useAuth();
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/auth/login");
-    }
-  }, [isAuthenticated, router]);
-
-  if (!isAuthenticated || !user) {
-    return <h2>Unauthorized</h2>;
-  }
-
   return (
     <main className="pb-16 pt-[4.5rem] px-4 bg-gray-50 min-h-screen">
       <div className="flex items-center justify-between py-3">

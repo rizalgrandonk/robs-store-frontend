@@ -1,7 +1,4 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { MdExpandMore } from "react-icons/md";
-import { useAuth } from "../../../contexts/AuthContext";
 
 const riwayatPesanan = [
   {
@@ -27,20 +24,6 @@ const riwayatPesanan = [
 ];
 
 function Pesanan() {
-  const { isAuthenticated, user } = useAuth();
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/auth/login");
-    }
-  }, [isAuthenticated, router]);
-
-  if (!isAuthenticated || !user) {
-    return <h2>Unauthorized</h2>;
-  }
-
   return (
     <main className="pb-16 pt-20 px-1 bg-gray-50 min-h-screen">
       <div className="space-y-4">
