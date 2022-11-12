@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 
-function MenuCard({ menu }) {
+function MenuCard({ menu, setMenus }) {
   return (
     <div className="p-2 flex items-center rounded-md bg-white gap-4 drop-shadow">
       <div className="w-28 h-24 relative overflow-hidden">
