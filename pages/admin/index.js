@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { MdContentPaste, MdMenuBook, MdQrCodeScanner } from "react-icons/md";
 import HeroCarousel from "../../components/HeroCarousel";
 import MenuCarousel from "../../components/MenuCarousel";
@@ -39,15 +40,19 @@ function Dashboard() {
               <p>Scan QR</p>
             </div>
             <div className="text-center text-gray-500">
-              <div className="h-16 w-16 bg-primary flex justify-center items-center text-4xl rounded-lg">
-                <MdContentPaste />
-              </div>
+              <Link legacyBehavior href="/admin/pesanan">
+                <a className="h-16 w-16 bg-primary flex justify-center items-center text-4xl rounded-lg">
+                  <MdContentPaste />
+                </a>
+              </Link>
               <p>Pesanan</p>
             </div>
             <div className="text-center text-gray-500">
-              <div className="h-16 w-16 bg-primary flex justify-center items-center text-4xl rounded-lg">
-                <MdMenuBook />
-              </div>
+              <Link legacyBehavior href="/admin/menu">
+                <a className="h-16 w-16 bg-primary flex justify-center items-center text-4xl rounded-lg">
+                  <MdMenuBook />
+                </a>
+              </Link>
               <p>Menu</p>
             </div>
           </div>

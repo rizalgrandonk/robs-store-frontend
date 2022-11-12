@@ -34,7 +34,10 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
 
     if (router.pathname.startsWith("/admin") && !isAuthenticated) {
-      router.replace("/auth/login");
+      router.push("/auth/login");
+    }
+    if (router.pathname.startsWith("/auth/login") && isAuthenticated) {
+      router.back();
     }
     setLoading(false);
   }, [isAuthenticated, router]);

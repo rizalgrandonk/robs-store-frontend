@@ -1,19 +1,13 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import logo from "../../public/logo.png";
 
 function Login() {
-  const { loginUser, isAuthenticated } = useAuth();
+  const { loginUser } = useAuth();
 
   const router = useRouter();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/admin");
-    }
-  }, [isAuthenticated, router]);
 
   const [userData, setUserData] = useState({
     username: "",

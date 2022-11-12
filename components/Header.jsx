@@ -22,7 +22,9 @@ function Avatar() {
 function Nav() {
   const router = useRouter();
   const paths = router.pathname.split("/");
-  const page = paths[paths.length - 1];
+  const page = paths[paths.length - 1].includes("[")
+    ? paths[paths.length - 2]
+    : paths[paths.length - 1];
   return (
     <div className="flex items-center gap-2">
       {page === "" ? (
