@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }) => {
     let localUser = localStorage.getItem("user");
 
     localUser = JSON.parse(localUser);
-    console.log(localUser);
     if (localUser) {
       setUser(localUser);
       setIsAuthenticated(true);
@@ -74,7 +73,7 @@ export const AuthProvider = ({ children }) => {
   if (!loading && !isAuthenticated && router.pathname.startsWith("/admin")) {
     return (
       <div className="h-screen flex justify-center items-center">
-        <h2 className="text-2xl font-bold">Unauthorized</h2>
+        <h2 className="text-3xl font-bold">Unauthorized</h2>
       </div>
     );
   }

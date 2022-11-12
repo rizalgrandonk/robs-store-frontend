@@ -62,6 +62,7 @@ function Login() {
             id="username"
             name="username"
             className="rounded-md text-lg border-none"
+            value={userData.username}
             onChange={handleChange}
           />
         </div>
@@ -74,6 +75,7 @@ function Login() {
             id="password"
             name="password"
             className="rounded-md text-lg border-none"
+            value={userData.password}
             onChange={handleChange}
           />
         </div>

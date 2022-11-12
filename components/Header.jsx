@@ -45,6 +45,7 @@ function Nav() {
 function Header() {
   const { logoutUser, isAuthenticated } = useAuth();
   const router = useRouter();
+  const { pathname } = router;
 
   const handleLogOut = () => {
     logoutUser();
@@ -52,7 +53,7 @@ function Header() {
   };
   return (
     <header className="flex justify-between items-center fixed inset-x-0 top-0 z-10 bg-primary p-4 shadow-md">
-      {isAuthenticated ? <Avatar /> : <Nav />}
+      {pathname === "/admin" && isAuthenticated ? <Avatar /> : <Nav />}
       <span onClick={handleLogOut} className="text-3xl text-gray-700">
         <MdLogout />
       </span>

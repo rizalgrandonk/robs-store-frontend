@@ -1,6 +1,4 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
 import Header from "./Header";
 import Navigation from "./Navigation";
 
