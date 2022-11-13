@@ -1,12 +1,7 @@
-import { useEffect, useState } from "react";
-import {
-  MdAdd,
-  MdOutlineDelete,
-  MdOutlineEdit,
-  MdOutlineFilterAlt,
-  MdSort,
-} from "react-icons/md";
+import { useState } from "react";
+import { MdAdd, MdSort } from "react-icons/md";
 import MenuCard from "../../../components/MenuCard";
+import MenuForm from "../../../components/MenuForm";
 
 const daftarMenu = [
   {
@@ -57,16 +52,16 @@ function Menu() {
   };
 
   return (
-    <main className="pb-16 pt-[4.5rem] px-4 bg-gray-50 min-h-screen">
+    <main className="pb-24 pt-[4.5rem] px-4 bg-gray-50 min-h-screen">
       <div className="flex items-center justify-between py-3">
         <div className="flex items-center gap-2">
           <SortButton setSortOption={setSortOption} />
         </div>
         <AddMenuButton setMenus={setMenus} />
       </div>
-      <div className="space-y-4">
+      <div className="flex flex-col gap-4">
         {menus.sort(sortMethods[sortOption]).map((menu) => (
-          <MenuCard key={menu.id} menu={menu} />
+          <MenuCard key={menu.id} menu={menu} setMenus={setMenus} />
         ))}
       </div>
     </main>
@@ -76,20 +71,7 @@ function Menu() {
 function AddMenuButton({ setMenus }) {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    price: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (formData) => {
     const menu = {
       id: (Math.random() + 1).toString(36).substring(7),
       name: formData.name,
@@ -99,10 +81,6 @@ function AddMenuButton({ setMenus }) {
     };
 
     setMenus((prev) => [...prev, menu]);
-    setFormData({
-      name: "",
-      price: "",
-    });
     setModalOpen(false);
   };
 
@@ -128,64 +106,7 @@ function AddMenuButton({ setMenus }) {
                 X
               </span>
             </div>
-            <form
-              onSubmit={handleSubmit}
-              className="py-4 flex flex-col items-center gap-3"
-            >
-              <div className="w-full flex flex-col gap-0">
-                <label htmlFor="name" className="text-lg font-medium">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  className="rounded-md text-lg"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="w-full flex flex-col gap-0">
-                <label htmlFor="price" className="text-lg font-medium">
-                  Price
-                </label>
-                <input
-                  type="text"
-                  id="price"
-                  name="price"
-                  className="rounded-md text-lg"
-                  value={formData.price}
-                  onChange={handleChange}
-                />
-              </div>
-              {/* <div className="w-full flex flex-col gap-0">
-                <label htmlFor="image" className="text-lg font-medium">
-                  Image
-                </label>
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  className="rounded-md text-lg"
-                  onChange={handleChange}
-                />
-              </div> */}
-              <div className="w-full flex justify-between pt-6">
-                <button
-                  type="button"
-                  className="bg-rose-600 text-gray-100 py-2 px-6 rounded-lg text-lg"
-                  onClick={() => setModalOpen(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-primary text-gray-800 py-2 px-6 rounded-lg text-lg"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
+            <MenuForm onSubmit={handleSubmit} setModalOpen={setModalOpen} />
           </div>
         </div>
       ) : (
