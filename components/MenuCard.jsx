@@ -1,9 +1,7 @@
 import Image from "next/image";
-import { useState } from "react";
-import { MdAdd, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
-import MenuForm from "./MenuForm";
+import { MdAdd } from "react-icons/md";
 
-export default function MenuCard({ menu }) {
+export default function MenuCard({ menu, setSelectedMenu }) {
   return (
     <>
       <div className="p-2 flex items-center rounded-md bg-white gap-4 drop-shadow">
@@ -24,12 +22,15 @@ export default function MenuCard({ menu }) {
           </span>
         </div>
         <div className="flex self-end pr-4 pb-4">
-          <div className="bg-primary text-gray-600 flex items-center px-2 py-1 rounded-md">
+          <button
+            onClick={() => setSelectedMenu(menu)}
+            className="bg-primary text-gray-600 flex items-center px-2 py-1 rounded-md"
+          >
             <span className="text-xl">
               <MdAdd />
             </span>
             <span className="text-sm">Pesan</span>
-          </div>
+          </button>
         </div>
       </div>
     </>

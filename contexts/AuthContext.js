@@ -19,28 +19,38 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
 
     let localUser = localStorage.getItem("user");
+    console.log(localUser);
 
     localUser = JSON.parse(localUser);
+
     if (localUser) {
       setUser(localUser);
       setIsAuthenticated(true);
+
+      if (router.pathname.startsWith("/auth/login")) {
+        router.back();
+      }
+    } else {
+      if (router.pathname.startsWith("/admin")) {
+        router.push("/auth/login");
+      }
     }
 
     setLoading(false);
-  }, []);
+  }, [router]);
 
   // Redirect user if not authenticated
-  useEffect(() => {
-    setLoading(true);
+  // useEffect(() => {
+  //   setLoading(true);
 
-    if (router.pathname.startsWith("/admin") && !isAuthenticated) {
-      router.push("/auth/login");
-    }
-    if (router.pathname.startsWith("/auth/login") && isAuthenticated) {
-      router.back();
-    }
-    setLoading(false);
-  }, [isAuthenticated, router]);
+  //   if (router.pathname.startsWith("/admin") && !isAuthenticated) {
+  //     router.push("/auth/login");
+  //   }
+  //   if (router.pathname.startsWith("/auth/login") && isAuthenticated) {
+  //     router.back();
+  //   }
+  //   setLoading(false);
+  // }, [isAuthenticated, router]);
 
   // Login user
   const loginUser = (userData) => {
@@ -83,7 +93,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {loading ? "" : children}
     </AuthContext.Provider>
   );
 };
