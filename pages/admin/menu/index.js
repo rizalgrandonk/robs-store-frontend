@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { MdAdd, MdSort } from "react-icons/md";
-import MenuCard from "../../../components/MenuCard";
+import { MdAdd } from "react-icons/md";
+import AdminMenuCard from "../../../components/AdminMenuCard";
 import MenuForm from "../../../components/MenuForm";
+import SortButton from "../../../components/SortButton";
 
 const daftarMenu = [
   {
@@ -34,7 +35,7 @@ const daftarMenu = [
   },
 ];
 
-function Menu() {
+export default function Menu() {
   const [menus, setMenus] = useState(daftarMenu);
   const [sortOption, setSortOption] = useState("name");
   const sortMethods = {
@@ -55,13 +56,16 @@ function Menu() {
     <main className="pb-24 pt-[4.5rem] px-4 bg-gray-50 min-h-screen">
       <div className="flex items-center justify-between py-3">
         <div className="flex items-center gap-2">
-          <SortButton setSortOption={setSortOption} />
+          <SortButton
+            setSortOption={setSortOption}
+            options={Object.keys(sortMethods)}
+          />
         </div>
         <AddMenuButton setMenus={setMenus} />
       </div>
       <div className="flex flex-col gap-4">
         {menus.sort(sortMethods[sortOption]).map((menu) => (
-          <MenuCard key={menu.id} menu={menu} setMenus={setMenus} />
+          <AdminMenuCard key={menu.id} menu={menu} setMenus={setMenus} />
         ))}
       </div>
     </main>
@@ -86,22 +90,23 @@ function AddMenuButton({ setMenus }) {
 
   return (
     <>
-      <div className="bg-primary text-gray-600 flex items-center px-2 py-1 rounded">
+      <div
+        onClick={() => setModalOpen(true)}
+        className="bg-primary text-gray-600 flex items-center px-2 py-1 rounded"
+      >
         <span className="text-xl">
           <MdAdd />
         </span>
-        <span onClick={() => setModalOpen(true)} className="text-sm">
-          Tambahkan Menu
-        </span>
+        <span className="text-sm">Tambahkan Menu</span>
       </div>
       {modalOpen ? (
-        <div className="absolute inset-0 px-2 grid place-items-center bg-black/40 z-40">
-          <div className="w-full bg-white rounded-md px-3 py-2">
-            <div className="flex justify-between items-center pb-1 border-b">
+        <div className="fixed inset-0 grid place-items-center bg-black/30 z-40">
+          <div className="w-full min-h-[60%] bg-white rounded-t-3xl px-5 py-4 absolute bottom-0">
+            <div className="flex justify-between items-center pb-2 border-b">
               <p className="text-xl">Add Menu</p>
               <span
                 onClick={() => setModalOpen(false)}
-                className="text-2xl text-rose-500 font-bold px-1"
+                className="text-2xl text-gray-600 font-bold px-1"
               >
                 X
               </span>
@@ -115,51 +120,3 @@ function AddMenuButton({ setMenus }) {
     </>
   );
 }
-
-function SortButton({ setSortOption }) {
-  const [sortOpen, setSortOpen] = useState(false);
-
-  return (
-    <div className="bg-primary text-gray-700 flex items-center px-2 py-1 rounded relative">
-      <span onClick={() => setSortOpen((prev) => !prev)} className="text-xl">
-        <MdSort />
-      </span>
-      <span className="text-sm">Sort</span>
-      {sortOpen ? (
-        <div className="absolute w-32 left-0 -bottom-[6.3rem] drop-shadow-xl bg-primary flex flex-col divide-y divide-white z-40 rounded">
-          <p
-            onClick={() => {
-              setSortOption("name");
-              setSortOpen(false);
-            }}
-            className="px-3 py-1"
-          >
-            Name
-          </p>
-          <p
-            onClick={() => {
-              setSortOption("price");
-              setSortOpen(false);
-            }}
-            className="px-3 py-1"
-          >
-            Price
-          </p>
-          <p
-            onClick={() => {
-              setSortOption("sales");
-              setSortOpen(false);
-            }}
-            className="px-3 py-1"
-          >
-            Sales
-          </p>
-        </div>
-      ) : (
-        ""
-      )}
-    </div>
-  );
-}
-
-export default Menu;

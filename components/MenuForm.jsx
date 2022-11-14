@@ -64,7 +64,7 @@ function MenuForm({ name = "", price = "", onSubmit, setModalOpen }) {
                   onChange={handleChange}
                 />
               </div> */}
-      <div className="w-full flex justify-between pt-6">
+      <div className="w-full flex justify-end items-center pt-6 gap-4">
         <button
           type="button"
           className="bg-rose-600 text-gray-100 py-2 px-6 rounded-lg text-lg"

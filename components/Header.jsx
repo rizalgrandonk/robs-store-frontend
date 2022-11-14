@@ -56,9 +56,13 @@ function Header() {
   return (
     <header className="flex justify-between items-center fixed inset-x-0 top-0 z-10 bg-primary p-4 shadow-md">
       {pathname === "/admin" && isAuthenticated ? <Avatar /> : <Nav />}
-      <span onClick={handleLogOut} className="text-3xl text-gray-700">
-        <MdLogout />
-      </span>
+      {pathname.startsWith("/admin") && isAuthenticated ? (
+        <span onClick={handleLogOut} className="text-3xl text-gray-700">
+          <MdLogout />
+        </span>
+      ) : (
+        ""
+      )}
     </header>
   );
 }

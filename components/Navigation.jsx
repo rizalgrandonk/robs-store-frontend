@@ -21,8 +21,8 @@ function Navigation() {
       >
         <Link legacyBehavior href="/admin">
           <a
-            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
-              pathname === "/admin" ? "text-primary" : ""
+            className={`focus:text-secondary hover:text-secondary flex flex-col justify-between items-center ${
+              pathname === "/admin" ? "text-secondary" : ""
             }`}
           >
             <span className="text-3xl">
@@ -33,8 +33,8 @@ function Navigation() {
         </Link>
         <Link legacyBehavior href="/admin/pesanan">
           <a
-            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
-              pathname.startsWith("/admin/pesanan") ? "text-primary" : ""
+            className={`focus:text-secondary hover:text-secondary flex flex-col justify-between items-center ${
+              pathname.startsWith("/admin/pesanan") ? "text-secondary" : ""
             }`}
           >
             <span className="text-3xl">
@@ -45,8 +45,8 @@ function Navigation() {
         </Link>
         <Link legacyBehavior href="/admin/menu">
           <a
-            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
-              pathname.startsWith("/admin/menu") ? "text-primary" : ""
+            className={`focus:text-secondary hover:text-secondary flex flex-col justify-between items-center ${
+              pathname.startsWith("/admin/menu") ? "text-secondary" : ""
             }`}
           >
             <span className="text-3xl">
@@ -57,8 +57,8 @@ function Navigation() {
         </Link>
         <Link legacyBehavior href="/admin/profile">
           <a
-            className={`focus:text-primary hover:text-primary flex flex-col justify-between items-center ${
-              pathname.startsWith("/admin/profile") ? "text-primary" : ""
+            className={`focus:text-secondary hover:text-secondary flex flex-col justify-between items-center ${
+              pathname.startsWith("/admin/profile") ? "text-secondary" : ""
             }`}
           >
             <span className="text-3xl">
