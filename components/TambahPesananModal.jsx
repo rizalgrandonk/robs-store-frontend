@@ -1,9 +1,21 @@
 import Image from "next/image";
 import { useState } from "react";
 import { MdAdd, MdRemove } from "react-icons/md";
+import { useCart } from "../contexts/CartContext";
 
 export default function TambahPesananModal({ selectedMenu, setSelectedMenu }) {
   const [jumlah, setJumlah] = useState(1);
+  const [notes, setNotes] = useState("");
+
+  const { addItem } = useCart();
+
+  const handleAddItem = () => {
+    const item = { ...selectedMenu, notes };
+    addItem(item, jumlah);
+    setSelectedMenu(null);
+    setJumlah(1);
+  };
+
   if (selectedMenu)
     return (
       <div className="fixed inset-0 grid place-items-center bg-black/30 z-40">
@@ -34,6 +46,8 @@ export default function TambahPesananModal({ selectedMenu, setSelectedMenu }) {
               {selectedMenu.name}
             </p>
             <input
+              onChange={(e) => setNotes(e.target.value)}
+              value={notes}
               placeholder="Add Notes"
               type="text"
               className="w-full border-b-2 border-0 border-gray-300 text-gray-900 focus:outline-none focus:ring-0 focus:border-secondary"
@@ -60,7 +74,10 @@ export default function TambahPesananModal({ selectedMenu, setSelectedMenu }) {
                 <MdAdd />
               </button>
             </div>
-            <button className="bg-secondary text-white flex px-6 py-3 rounded-md text-xl">
+            <button
+              onClick={handleAddItem}
+              className="bg-secondary text-white flex px-6 py-3 rounded-md text-xl"
+            >
               Tambahkan Pesanan
             </button>
           </div>
