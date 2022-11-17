@@ -34,9 +34,11 @@ function Dashboard() {
           <HeroCarousel />
           <div className="w-full px-8 py-14 flex justify-between items-center bg-white absolute bottom-0 rounded-t-[2rem]">
             <div className="text-center text-gray-500">
-              <div className="h-16 w-16 bg-primary flex justify-center items-center text-4xl rounded-lg">
-                <MdQrCodeScanner />
-              </div>
+              <Link legacyBehavior href="/admin/scan">
+                <a className="h-16 w-16 bg-primary flex justify-center items-center text-4xl rounded-lg">
+                  <MdQrCodeScanner />
+                </a>
+              </Link>
               <p>Scan QR</p>
             </div>
             <div className="text-center text-gray-500">

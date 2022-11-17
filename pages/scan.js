@@ -27,8 +27,8 @@ export default function Scan() {
 
   return (
     <main className="pb-2 pt-20 px-2 bg-gray-50 h-screen space-y-3">
-      <div className="flex flex-col items-center gap-10 bg-white pt-20 h-full">
-        <div className="w-24 h-24 flex justify-center items-center bg-primary rounded-full text-5xl text-white">
+      <div className="flex flex-col items-center gap-10 bg-white pt-16 h-full">
+        <div className="w-20 h-20 flex justify-center items-center bg-primary rounded-full text-4xl text-white">
           <GiCheckMark />
         </div>
         <p className="italic">Pesanan anda berhasil dibuat</p>

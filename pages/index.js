@@ -41,7 +41,7 @@ export default function Home() {
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [sortOption, setSortOption] = useState("name");
 
-  const { isEmpty, cartTotal, inCart } = useCart();
+  const { isEmpty, cartTotal } = useCart();
 
   const sortMethods = {
     name: (a, b) => {
@@ -69,19 +69,13 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          {menus
-            .sort(sortMethods[sortOption])
-            .map((menu) =>
-              !inCart(menu.id) ? (
-                <MenuCard
-                  key={menu.id}
-                  menu={menu}
-                  setSelectedMenu={setSelectedMenu}
-                />
-              ) : (
-                ""
-              )
-            )}
+          {menus.sort(sortMethods[sortOption]).map((menu) => (
+            <MenuCard
+              key={menu.id}
+              menu={menu}
+              setSelectedMenu={setSelectedMenu}
+            />
+          ))}
         </div>
       </main>
       <TambahPesananModal

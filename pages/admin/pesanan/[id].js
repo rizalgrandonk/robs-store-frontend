@@ -116,7 +116,7 @@ function DetailPesanan() {
                   </span>
                   <span className="text-gray-500">Jumlah : {menu.jumlah}</span>
                   <span className="text-gray-500">
-                    Notes : {menu.notes ? menu.notes : "-"}
+                    Notes : {menu.notes || menu.notes !== "" ? menu.notes : "-"}
                   </span>
                 </div>
               </div>

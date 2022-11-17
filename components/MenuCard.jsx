@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { MdAdd } from "react-icons/md";
+import { useCart } from "../contexts/CartContext";
 
 export default function MenuCard({ menu, setSelectedMenu }) {
+  const { inCart } = useCart();
   return (
     <>
       <div className="p-2 flex items-center rounded-md bg-white gap-4 drop-shadow">
@@ -24,7 +26,8 @@ export default function MenuCard({ menu, setSelectedMenu }) {
         <div className="flex self-end pr-4 pb-4">
           <button
             onClick={() => setSelectedMenu(menu)}
-            className="bg-primary text-gray-600 flex items-center px-2 py-1 rounded-md"
+            className="bg-primary text-gray-600 flex items-center px-2 py-1 rounded-md disabled:bg-gray-300"
+            disabled={inCart(menu.id)}
           >
             <span className="text-xl">
               <MdAdd />
