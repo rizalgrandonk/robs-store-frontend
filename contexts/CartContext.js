@@ -12,6 +12,8 @@ export const CartProvider = ({ children }) => {
   const [totalItems, setTotalItems] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [namaCustomer, setNamaCustomer] = useState("");
+  const [meja, setMeja] = useState("");
 
   useEffect(() => {
     let localCart = localStorage.getItem("cart");
@@ -99,6 +101,10 @@ export const CartProvider = ({ children }) => {
     inCart,
     emptyCart,
     isEmpty,
+    meja,
+    namaCustomer,
+    setMeja,
+    setNamaCustomer,
   };
 
   return (

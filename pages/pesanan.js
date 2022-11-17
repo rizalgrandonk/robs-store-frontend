@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useRouter } from "next/router";
 import CartItem from "../components/CartItem";
 import { useCart } from "../contexts/CartContext";
 
 export default function Pesanan() {
-  const { items, isEmpty, cartTotal } = useCart();
-  const [namaCustomer, setNamaCustomer] = useState("");
-  const [meja, setMeja] = useState("");
+  const {
+    items,
+    isEmpty,
+    cartTotal,
+    namaCustomer,
+    meja,
+    setNamaCustomer,
+    setMeja,
+  } = useCart();
+
+  const router = useRouter();
 
   return (
     <>
@@ -72,6 +80,9 @@ export default function Pesanan() {
               type="button"
               className="flex justify-center items-center w-full h-full bg-secondary text-white text-lg font-medium disabled:bg-gray-400"
               disabled={namaCustomer === "" || meja === ""}
+              onClick={() => {
+                router.push("/scan");
+              }}
             >
               Buat Pesanan
             </button>
