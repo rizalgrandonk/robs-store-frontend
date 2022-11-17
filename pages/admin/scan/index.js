@@ -10,7 +10,7 @@ export default function Scan() {
 
   return (
     <main className="pb-16 pt-16 px-1 bg-gray-50 h-screen">
-      <div className="px-4">
+      <div className="px-1">
         <QrReader
           ref={qr}
           onResult={(result, error) => {
@@ -26,6 +26,7 @@ export default function Scan() {
             }
           }}
           style={{ width: "100%" }}
+          constraints={{ facingMode: "environment" }}
         />
       </div>
     </main>
