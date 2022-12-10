@@ -8,17 +8,16 @@ export default function Scan() {
   const router = useRouter();
   const qr = useRef();
 
+  // !! ERROR try react-qr-barcode-scanner
   return (
     <main className="pb-16 pt-16 px-1 bg-gray-50 h-screen">
       <div className="px-1 pt-12">
         <QrReader
-          ref={qr}
           onResult={(result, error) => {
             if (result) {
               console.log(result?.text);
               setPesanan(JSON.parse(result?.text));
               router.push("/admin/pesanan");
-              ReactDOM.unmountComponentAtNode(qr.current);
             }
 
             if (error) {
