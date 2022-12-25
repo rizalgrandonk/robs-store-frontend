@@ -1,9 +1,12 @@
 import Image from "next/image";
 import { useState } from "react";
-import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
+import { MdClose, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
+import { useMutation, useQueryClient } from "react-query";
+import { useAuth } from "../contexts/AuthContext";
+import { deleteMenu, editMenu } from "../lib/api";
 import MenuForm from "./MenuForm";
 
-export default function AdminMenuCard({ menu, setMenus }) {
+export default function AdminMenuCard({ menu }) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
@@ -12,7 +15,7 @@ export default function AdminMenuCard({ menu, setMenus }) {
       <div className="p-2 flex items-center rounded-md bg-white gap-4 drop-shadow">
         <div className="w-24 h-20 relative overflow-hidden">
           <Image
-            src={menu.image}
+            src={menu.img}
             alt={menu.name}
             fill
             loading="lazy"
@@ -41,15 +44,15 @@ export default function AdminMenuCard({ menu, setMenus }) {
           </span>
         </div>
       </div>
+
       <DeleteModal
         menu={menu}
-        setMenus={setMenus}
         setDeleteModalOpen={setDeleteModalOpen}
         isOpen={deleteModalOpen}
       />
       <EditModal
         menu={menu}
-        setMenus={setMenus}
+        // setMenus={setMenus}
         setEditModalOpen={setEditModalOpen}
         isOpen={editModalOpen}
       />
@@ -57,66 +60,87 @@ export default function AdminMenuCard({ menu, setMenus }) {
   );
 }
 
-function DeleteModal({ menu, setMenus, setDeleteModalOpen, isOpen }) {
+function DeleteModal({ menu, setDeleteModalOpen, isOpen }) {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation((id) => deleteMenu(id, user.token), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("/admin/menu");
+      setDeleteModalOpen(false);
+    },
+  });
+
   const handleDelete = () => {
-    setMenus((prev) => prev.filter((item) => item.id !== menu.id));
-    setDeleteModalOpen(false);
+    mutation.mutate(menu.id);
   };
-  return isOpen ? (
-    <div className="fixed inset-0 grid place-items-center bg-black/30 z-40">
-      <div className="w-full min-h-[60%] bg-white rounded-t-3xl px-5 py-4 absolute bottom-0">
-        <div className="flex justify-between items-center pb-2 border-b">
-          <p className="text-xl font-medium">Delete Menu</p>
-          <span
-            onClick={() => setDeleteModalOpen(false)}
-            className="text-2xl text-gray-600 font-bold px-1"
-          >
-            X
-          </span>
-        </div>
-        <p className="py-8 text-xl">
-          Are you sure deleting <span className="font-medium">{menu.name}</span>{" "}
-          ?
-        </p>
-        <div className="w-full flex justify-end items-center gap-4">
-          <button
-            type="button"
-            className="bg-gray-600 text-gray-100 py-2 px-6 rounded-lg text-lg"
-            onClick={() => setDeleteModalOpen(false)}
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="bg-rose-500 text-gray-100 py-2 px-6 rounded-lg text-lg"
-            onClick={handleDelete}
-          >
-            Delete
-          </button>
+
+  if (isOpen) {
+    return (
+      <div className="fixed inset-0 grid place-items-center bg-black/30 z-40">
+        <div className="w-full min-h-[60%] bg-white rounded-t-3xl px-5 py-4 absolute bottom-0">
+          <div className="flex justify-between items-center pb-2 border-b">
+            <p className="text-xl font-medium">Delete Menu</p>
+            <span
+              onClick={() => setDeleteModalOpen(false)}
+              className="text-2xl text-gray-600 font-bold px-1"
+            >
+              <MdClose />
+            </span>
+          </div>
+          {mutation.isError ? (
+            <div>An error occurred: {mutation.error.message}</div>
+          ) : null}
+          {mutation.isLoading ? (
+            <div className="w-full flex justify-center items-center py-6">
+              <div className="border-t-transparent border-solid animate-spin  rounded-full border-primary border-8 h-20 w-20"></div>
+            </div>
+          ) : (
+            <>
+              <p className="py-8 text-xl">
+                Are you sure deleting{" "}
+                <span className="font-medium">{menu.name}</span> ?
+              </p>
+              <div className="w-full flex justify-end items-center gap-4">
+                <button
+                  type="button"
+                  className="bg-gray-600 text-gray-100 py-2 px-6 rounded-lg text-lg"
+                  onClick={() => setDeleteModalOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="bg-rose-500 text-gray-100 py-2 px-6 rounded-lg text-lg"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
-    </div>
-  ) : (
-    ""
-  );
+    );
+  }
 }
 
-function EditModal({ menu, setMenus, setEditModalOpen, isOpen }) {
-  const handleSubmit = (formData) => {
-    const editedMenu = {
-      id: menu.id,
-      name: formData.name,
-      price: parseFloat(formData.price),
-      sales: menu.sales,
-      image: `https://source.unsplash.com/random/?${formData.name}`,
-    };
+function EditModal({ menu, setEditModalOpen, isOpen }) {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
 
-    setMenus((prev) => {
-      const filtered = prev.filter((item) => item.id !== menu.id);
-      return [...filtered, editedMenu];
-    });
-    setEditModalOpen(false);
+  const mutation = useMutation((data) => editMenu(menu.id, data, user.token), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("/admin/menu");
+      setEditModalOpen(false);
+    },
+  });
+
+  const handleSubmit = (formData) => {
+    console.log(formData);
+    mutation.mutate(formData);
   };
+
   return isOpen ? (
     <div className="fixed inset-0 grid place-items-center bg-black/30 z-40">
       <div className="w-full min-h-[60%] bg-white rounded-t-3xl px-5 py-4 absolute bottom-0">
@@ -126,15 +150,25 @@ function EditModal({ menu, setMenus, setEditModalOpen, isOpen }) {
             onClick={() => setEditModalOpen(false)}
             className="text-2xl text-gray-600 font-bold px-1"
           >
-            X
+            <MdClose />
           </span>
         </div>
-        <MenuForm
-          name={menu.name}
-          price={`${menu.price}`}
-          onSubmit={handleSubmit}
-          setModalOpen={setEditModalOpen}
-        />
+        {mutation.isError ? (
+          <div>An error occurred: {mutation.error.message}</div>
+        ) : null}
+        {mutation.isLoading ? (
+          <div className="w-full flex justify-center items-center py-6">
+            <div className="border-t-transparent border-solid animate-spin  rounded-full border-primary border-8 h-20 w-20"></div>
+          </div>
+        ) : (
+          <MenuForm
+            edit
+            name={menu.name}
+            price={`${menu.price}`}
+            onSubmit={handleSubmit}
+            setModalOpen={setEditModalOpen}
+          />
+        )}
       </div>
     </div>
   ) : (

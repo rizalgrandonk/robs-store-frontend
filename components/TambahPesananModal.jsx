@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
-import { MdAdd, MdRemove } from "react-icons/md";
+import { MdAdd, MdClose, MdRemove } from "react-icons/md";
 import { useCart } from "../contexts/CartContext";
 
 export default function TambahPesananModal({ selectedMenu, setSelectedMenu }) {
@@ -28,7 +28,7 @@ export default function TambahPesananModal({ selectedMenu, setSelectedMenu }) {
               }}
               className="text-2xl text-gray-600 font-bold px-1"
             >
-              X
+              <MdClose />
             </span>
           </div>
           <div className="px-2 flex flex-col items-center gap-6">

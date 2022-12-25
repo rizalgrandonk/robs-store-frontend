@@ -1,10 +1,21 @@
-import { useState } from "react";
+import Image from "next/image";
+import { useRef, useState } from "react";
+import { BiImageAdd } from "react-icons/bi";
 
-function MenuForm({ name = "", price = "", onSubmit, setModalOpen }) {
+function MenuForm({
+  name = "",
+  price = "",
+  edit = false,
+  onSubmit,
+  setModalOpen,
+}) {
   const [formData, setFormData] = useState({
     name: name,
     price: price,
   });
+  const [image, setImage] = useState(null);
+
+  const imageInputRef = useRef();
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -13,9 +24,24 @@ function MenuForm({ name = "", price = "", onSubmit, setModalOpen }) {
     }));
   };
 
+  const handleChaneImage = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("price", formData.price);
+    if (!edit) {
+      data.append("typeId", "1");
+    }
+    if (image) {
+      data.append("menu", image);
+    }
+    onSubmit(data);
     setFormData({
       name: "",
       price: "",
@@ -26,6 +52,46 @@ function MenuForm({ name = "", price = "", onSubmit, setModalOpen }) {
       onSubmit={handleSubmit}
       className="py-4 flex flex-col items-center gap-3"
     >
+      <input
+        ref={imageInputRef}
+        type="file"
+        accept="image/jpg,image/png,image/jpeg"
+        name="image"
+        id="image"
+        className="hidden"
+        onChange={handleChaneImage}
+      />
+
+      {!image ? (
+        <div
+          onClick={() => imageInputRef.current.click()}
+          className="w-1/2 h-40 border-2 border-gray-500 flex flex-col justify-center items-center text-9xl text-gray-500 cursor-pointer"
+        >
+          <BiImageAdd />
+          {edit ? (
+            <p className="text-sm py-1 px-4 text-center">
+              Kosongi jika tidak ingin merubah image
+            </p>
+          ) : (
+            ""
+          )}
+        </div>
+      ) : (
+        <div
+          onClick={() => imageInputRef.current.click()}
+          className="w-1/2 h-40 flex justify-center items-center text-9xl relative text-gray-500 cursor-pointer"
+        >
+          <Image
+            src={URL.createObjectURL(image)}
+            alt="Menu Image"
+            fill
+            loading="lazy"
+            sizes="50vw"
+            className="object-cover h-full w-full"
+          />
+        </div>
+      )}
+
       <div className="w-full flex flex-col gap-0">
         <label htmlFor="name" className="text-lg font-medium">
           Name
@@ -52,18 +118,6 @@ function MenuForm({ name = "", price = "", onSubmit, setModalOpen }) {
           onChange={handleChange}
         />
       </div>
-      {/* <div className="w-full flex flex-col gap-0">
-                <label htmlFor="image" className="text-lg font-medium">
-                  Image
-                </label>
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  className="rounded-md text-lg"
-                  onChange={handleChange}
-                />
-              </div> */}
       <div className="w-full flex justify-end items-center pt-6 gap-4">
         <button
           type="button"

@@ -5,7 +5,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import logo from "../../public/logo.png";
 
 function Login() {
-  const { loginUser } = useAuth();
+  const { loginUser, loading } = useAuth();
+  const [error, setError] = useState(null);
 
   const router = useRouter();
 
@@ -21,10 +22,18 @@ function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    loginUser(userData);
-    router.push("/admin");
+    const data = await loginUser(userData);
+
+    if (data.token) {
+      router.push("/admin");
+      return;
+    }
+    if (data.error) {
+      setError(data.error);
+      return;
+    }
   };
 
   return (
@@ -74,12 +83,29 @@ function Login() {
           />
         </div>
         <button
+          disabled={loading}
           type="submit"
           className="bg-white text-secondary py-2 px-4 rounded-lg text-lg"
         >
           Masuk
         </button>
       </form>
+      {loading ? (
+        <div className="w-full flex justify-center items-center py-6">
+          <div className="border-t-transparent border-solid animate-spin  rounded-full border-white border-8 h-14 w-14"></div>
+        </div>
+      ) : (
+        ""
+      )}
+      {error ? (
+        <div className="px-4">
+          <div className="w-full px-2 py-3 bg-red-100">
+            <p className="text-red-500">{error}</p>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </main>
   );
 }

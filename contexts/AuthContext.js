@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
 
     let localUser = localStorage.getItem("user");
-    console.log(localUser);
 
     localUser = JSON.parse(localUser);
 
@@ -39,29 +38,43 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, [router]);
 
-  // Redirect user if not authenticated
-  // useEffect(() => {
-  //   setLoading(true);
-
-  //   if (router.pathname.startsWith("/admin") && !isAuthenticated) {
-  //     router.push("/auth/login");
-  //   }
-  //   if (router.pathname.startsWith("/auth/login") && isAuthenticated) {
-  //     router.back();
-  //   }
-  //   setLoading(false);
-  // }, [isAuthenticated, router]);
-
   // Login user
-  const loginUser = (userData) => {
+  const loginUser = async (userData) => {
     setLoading(true);
 
-    setUser(userData);
+    const returnVal = { token: null, error: null };
 
-    localStorage.setItem("user", JSON.stringify(userData));
-    setIsAuthenticated(true);
+    await fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/admin/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ username: userData.username, token: data.token })
+          );
+          setUser({ username: userData.username, token: data.token });
+          setIsAuthenticated(true);
+          returnVal.token = data.token;
+        }
+        if (!data.token && data.message) {
+          setUser(null);
+          setIsAuthenticated(false);
+          returnVal.error = data.message;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     setLoading(false);
+
+    return returnVal;
   };
 
   // Logout user
@@ -91,9 +104,5 @@ export const AuthProvider = ({ children }) => {
     );
   }
 
-  return (
-    <AuthContext.Provider value={value}>
-      {loading ? "" : children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

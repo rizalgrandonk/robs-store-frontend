@@ -1,42 +1,50 @@
 import { useState } from "react";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdClose } from "react-icons/md";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import AdminMenuCard from "../../../components/AdminMenuCard";
 import MenuForm from "../../../components/MenuForm";
 import SortButton from "../../../components/SortButton";
+import { useAuth } from "../../../contexts/AuthContext";
+import { addMenu, getAllMenu } from "../../../lib/api";
 
-const daftarMenu = [
-  {
-    id: "1",
-    name: "Americano",
-    image: "https://source.unsplash.com/random/?americano",
-    sales: 1300,
-    price: 14000,
-  },
-  {
-    id: "2",
-    name: "Latte",
-    image: "https://source.unsplash.com/random/?latte",
-    sales: 2700,
-    price: 18000,
-  },
-  {
-    id: "3",
-    name: "Cappuccino",
-    image: "https://source.unsplash.com/random/?cappuccino",
-    sales: 1600,
-    price: 16000,
-  },
-  {
-    id: "4",
-    name: "Espresso",
-    image: "https://source.unsplash.com/random/?espresso",
-    sales: 1000,
-    price: 12000,
-  },
-];
+// const daftarMenu = [
+//   {
+//     id: "1",
+//     name: "Americano",
+//     image: "https://source.unsplash.com/random/?americano",
+//     sales: 1300,
+//     price: 14000,
+//   },
+//   {
+//     id: "2",
+//     name: "Latte",
+//     image: "https://source.unsplash.com/random/?latte",
+//     sales: 2700,
+//     price: 18000,
+//   },
+//   {
+//     id: "3",
+//     name: "Cappuccino",
+//     image: "https://source.unsplash.com/random/?cappuccino",
+//     sales: 1600,
+//     price: 16000,
+//   },
+//   {
+//     id: "4",
+//     name: "Espresso",
+//     image: "https://source.unsplash.com/random/?espresso",
+//     sales: 1000,
+//     price: 12000,
+//   },
+// ];
 
 export default function Menu() {
-  const [menus, setMenus] = useState(daftarMenu);
+  const { user } = useAuth();
+  const {
+    isLoading,
+    isError,
+    data: daftarMenu,
+  } = useQuery("/admin/menu", () => getAllMenu(user.token));
   const [sortOption, setSortOption] = useState("name");
   const sortMethods = {
     name: (a, b) => {
@@ -52,40 +60,60 @@ export default function Menu() {
     sales: (a, b) => b.sales - a.sales,
   };
 
-  return (
-    <main className="pb-24 pt-[4.5rem] px-4 bg-gray-50 min-h-screen">
-      <div className="flex items-center justify-between py-3">
-        <div className="flex items-center gap-2">
-          <SortButton
-            setSortOption={setSortOption}
-            options={Object.keys(sortMethods)}
-          />
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <div className="border-t-transparent border-solid animate-spin  rounded-full border-primary border-8 h-20 w-20"></div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="px-4 pt-20">
+        <div className="w-full px-2 py-3 bg-red-100">
+          <p className="text-red-500">Service Error</p>
         </div>
-        <AddMenuButton setMenus={setMenus} />
       </div>
-      <div className="flex flex-col gap-4">
-        {menus.sort(sortMethods[sortOption]).map((menu) => (
-          <AdminMenuCard key={menu.id} menu={menu} setMenus={setMenus} />
-        ))}
-      </div>
-    </main>
-  );
+    );
+  }
+
+  if (daftarMenu) {
+    return (
+      <main className="pb-24 pt-[4.5rem] px-4 bg-gray-50 min-h-screen">
+        <div className="flex items-center justify-between py-3">
+          <div className="flex items-center gap-2">
+            <SortButton
+              setSortOption={setSortOption}
+              options={Object.keys(sortMethods)}
+            />
+          </div>
+          <AddMenuButton />
+        </div>
+        <div className="flex flex-col gap-4">
+          {daftarMenu.sort(sortMethods[sortOption]).map((menu) => (
+            <AdminMenuCard key={menu.id} menu={menu} />
+          ))}
+        </div>
+      </main>
+    );
+  }
 }
 
-function AddMenuButton({ setMenus }) {
+function AddMenuButton() {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleSubmit = (formData) => {
-    const menu = {
-      id: (Math.random() + 1).toString(36).substring(7),
-      name: formData.name,
-      price: parseFloat(formData.price),
-      sales: 0,
-      image: `https://source.unsplash.com/random/?${formData.name}`,
-    };
+  const mutation = useMutation((data) => addMenu(data, user.token), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("/admin/menu");
+      setModalOpen(false);
+    },
+  });
 
-    setMenus((prev) => [...prev, menu]);
-    setModalOpen(false);
+  const handleSubmit = (formData) => {
+    mutation.mutate(formData);
   };
 
   return (
@@ -108,10 +136,19 @@ function AddMenuButton({ setMenus }) {
                 onClick={() => setModalOpen(false)}
                 className="text-2xl text-gray-600 font-bold px-1"
               >
-                X
+                <MdClose />
               </span>
             </div>
-            <MenuForm onSubmit={handleSubmit} setModalOpen={setModalOpen} />
+            {mutation.isError ? (
+              <div>An error occurred: {mutation.error.message}</div>
+            ) : null}
+            {mutation.isLoading ? (
+              <div className="w-full flex justify-center items-center py-6">
+                <div className="border-t-transparent border-solid animate-spin  rounded-full border-primary border-8 h-20 w-20"></div>
+              </div>
+            ) : (
+              <MenuForm onSubmit={handleSubmit} setModalOpen={setModalOpen} />
+            )}
           </div>
         </div>
       ) : (
