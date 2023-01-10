@@ -2,19 +2,22 @@ import { useState } from "react";
 import { MdAdd, MdClose } from "react-icons/md";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AdminMenuCard from "../../../components/AdminMenuCard";
+import AdminToppingCard from "../../../components/AdminToppingCard";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import MenuForm from "../../../components/MenuForm";
 import SortButton from "../../../components/SortButton";
+import ToppingForm from "../../../components/ToppingForm";
 import { useAuth } from "../../../contexts/AuthContext";
-import { addMenu, getAllMenu } from "../../../lib/api";
+import { addTopping, getAllTopping } from "../../../lib/api";
 
-export default function Menu() {
+export default function Topping() {
   const { user } = useAuth();
   const {
     isLoading,
     isError,
-    data: daftarMenu,
-  } = useQuery("allMenu", () => getAllMenu(user.token));
+    data: daftarTopping,
+  } = useQuery("allTopping", () => getAllTopping(user.token));
+
   const [sortOption, setSortOption] = useState("name");
   const sortMethods = {
     name: (a, b) => {
@@ -44,7 +47,7 @@ export default function Menu() {
     );
   }
 
-  if (daftarMenu) {
+  if (daftarTopping) {
     return (
       <main className="pb-24 pt-[4.5rem] px-4 bg-gray-50 min-h-screen">
         <div className="flex items-center justify-between py-3">
@@ -54,11 +57,11 @@ export default function Menu() {
               options={Object.keys(sortMethods)}
             />
           </div>
-          <AddMenuButton />
+          <AddToppingButton />
         </div>
         <div className="flex flex-col gap-4">
-          {daftarMenu.sort(sortMethods[sortOption]).map((menu) => (
-            <AdminMenuCard key={menu.id} menu={menu} />
+          {daftarTopping.sort(sortMethods[sortOption]).map((topping) => (
+            <AdminToppingCard key={topping.id} topping={topping} />
           ))}
         </div>
       </main>
@@ -66,14 +69,14 @@ export default function Menu() {
   }
 }
 
-function AddMenuButton() {
+function AddToppingButton() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [modalOpen, setModalOpen] = useState(false);
 
-  const mutation = useMutation((data) => addMenu(data, user.token), {
+  const mutation = useMutation((data) => addTopping(data, user.token), {
     onSuccess: () => {
-      queryClient.invalidateQueries("allMenu");
+      queryClient.invalidateQueries("allTopping");
       setModalOpen(false);
     },
   });
@@ -91,7 +94,7 @@ function AddMenuButton() {
         <span className="text-xl">
           <MdAdd />
         </span>
-        <span className="text-sm">Tambahkan Menu</span>
+        <span className="text-sm">Tambahkan Topping</span>
       </div>
       {modalOpen ? (
         <div className="fixed inset-0 grid place-items-center bg-black/30 z-40">
@@ -106,14 +109,19 @@ function AddMenuButton() {
               </span>
             </div>
             {mutation.isError ? (
-              <div>An error occurred: {mutation.error.message}</div>
+              <div className="p-2 bg-red-100 ring-1 ring-red-200 text-red-400 ">
+                {mutation.error.message}
+              </div>
             ) : null}
             {mutation.isLoading ? (
               <div className="w-full flex justify-center items-center py-6">
                 <div className="border-t-transparent border-solid animate-spin  rounded-full border-primary border-8 h-20 w-20"></div>
               </div>
             ) : (
-              <MenuForm onSubmit={handleSubmit} setModalOpen={setModalOpen} />
+              <ToppingForm
+                onSubmit={handleSubmit}
+                setModalOpen={setModalOpen}
+              />
             )}
           </div>
         </div>

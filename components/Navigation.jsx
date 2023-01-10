@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
+  MdAddchart,
   MdContentPaste,
   MdHome,
   MdMenuBook,
@@ -55,16 +56,16 @@ function Navigation() {
             <span className="block text-sm">Menu</span>
           </a>
         </Link>
-        <Link legacyBehavior href="/admin/profile">
+        <Link legacyBehavior href="/admin/topping">
           <a
             className={`focus:text-secondary hover:text-secondary flex flex-col justify-between items-center ${
               pathname.startsWith("/admin/profile") ? "text-secondary" : ""
             }`}
           >
             <span className="text-3xl">
-              <MdOutlinePersonOutline />
+              <MdAddchart />
             </span>
-            <span className="block text-sm">Profile</span>
+            <span className="block text-sm">Topping</span>
           </a>
         </Link>
       </div>
