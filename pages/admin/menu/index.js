@@ -7,44 +7,13 @@ import SortButton from "../../../components/SortButton";
 import { useAuth } from "../../../contexts/AuthContext";
 import { addMenu, getAllMenu } from "../../../lib/api";
 
-// const daftarMenu = [
-//   {
-//     id: "1",
-//     name: "Americano",
-//     image: "https://source.unsplash.com/random/?americano",
-//     sales: 1300,
-//     price: 14000,
-//   },
-//   {
-//     id: "2",
-//     name: "Latte",
-//     image: "https://source.unsplash.com/random/?latte",
-//     sales: 2700,
-//     price: 18000,
-//   },
-//   {
-//     id: "3",
-//     name: "Cappuccino",
-//     image: "https://source.unsplash.com/random/?cappuccino",
-//     sales: 1600,
-//     price: 16000,
-//   },
-//   {
-//     id: "4",
-//     name: "Espresso",
-//     image: "https://source.unsplash.com/random/?espresso",
-//     sales: 1000,
-//     price: 12000,
-//   },
-// ];
-
 export default function Menu() {
   const { user } = useAuth();
   const {
     isLoading,
     isError,
     data: daftarMenu,
-  } = useQuery("/admin/menu", () => getAllMenu(user.token));
+  } = useQuery("allMenu", () => getAllMenu(user.token));
   const [sortOption, setSortOption] = useState("name");
   const sortMethods = {
     name: (a, b) => {
@@ -107,7 +76,7 @@ function AddMenuButton() {
 
   const mutation = useMutation((data) => addMenu(data, user.token), {
     onSuccess: () => {
-      queryClient.invalidateQueries("/admin/menu");
+      queryClient.invalidateQueries("allMenu");
       setModalOpen(false);
     },
   });

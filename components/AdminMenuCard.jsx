@@ -52,7 +52,6 @@ export default function AdminMenuCard({ menu }) {
       />
       <EditModal
         menu={menu}
-        // setMenus={setMenus}
         setEditModalOpen={setEditModalOpen}
         isOpen={editModalOpen}
       />
@@ -66,7 +65,7 @@ function DeleteModal({ menu, setDeleteModalOpen, isOpen }) {
 
   const mutation = useMutation((id) => deleteMenu(id, user.token), {
     onSuccess: () => {
-      queryClient.invalidateQueries("/admin/menu");
+      queryClient.invalidateQueries("allMenu");
       setDeleteModalOpen(false);
     },
   });
@@ -131,7 +130,7 @@ function EditModal({ menu, setEditModalOpen, isOpen }) {
 
   const mutation = useMutation((data) => editMenu(menu.id, data, user.token), {
     onSuccess: () => {
-      queryClient.invalidateQueries("/admin/menu");
+      queryClient.invalidateQueries("allMenu");
       setEditModalOpen(false);
     },
   });
