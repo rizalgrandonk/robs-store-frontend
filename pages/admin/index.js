@@ -1,30 +1,11 @@
 import Link from "next/link";
 import { MdContentPaste, MdMenuBook, MdQrCodeScanner } from "react-icons/md";
+import { useQuery } from "react-query";
 import HeroCarousel from "../../components/HeroCarousel";
+import LoadingSpinner from "../../components/LoadingSpinner";
 import MenuCarousel from "../../components/MenuCarousel";
-
-const riwayatPesanan = [
-  {
-    id: "14001",
-    nomor_meja: 1,
-    completed: true,
-  },
-  {
-    id: "14005",
-    nomor_meja: 5,
-    completed: false,
-  },
-  {
-    id: "14007",
-    nomor_meja: 7,
-    completed: false,
-  },
-  {
-    id: "14013",
-    nomor_meja: 13,
-    completed: true,
-  },
-];
+import { useAuth } from "../../contexts/AuthContext";
+import { getAllPesanan } from "../../lib/api";
 
 function Dashboard() {
   return (
@@ -65,25 +46,60 @@ function Dashboard() {
         <h2 className="text-xl font-bold text-secondary">Menu Terlaris</h2>
         <MenuCarousel />
 
+        <PesananSectio />
+      </div>
+    </main>
+  );
+}
+
+function PesananSectio() {
+  const { user } = useAuth();
+  const {
+    isLoading,
+    isError,
+    data: daftarPesanan,
+  } = useQuery("allPesanan", () => getAllPesanan(user.token));
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (isError) {
+    return (
+      <div className="px-4 pt-20">
+        <div className="w-full px-2 py-3 bg-red-100">
+          <p className="text-red-500">Service Error</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (daftarPesanan) {
+    return (
+      <>
         <h2 className="text-xl font-bold text-secondary">Riwayat Pesanan</h2>
         <div className="py-4 space-y-3">
-          {riwayatPesanan.map((pesanan) => (
+          {daftarPesanan.map((pesanan) => (
             <div
               key={pesanan.id}
               className="flex justify-between items-center bg-gray-100 px-7 py-4 rounded-xl"
             >
-              <p className="text-gray-900 text-lg">{`Meja ${pesanan.nomor_meja}`}</p>
-              {pesanan.completed ? (
-                <span className="text-cyan-600 text-lg">Pesanan Selesai</span>
+              <p className="text-gray-900 text-lg">{`Meja ${pesanan.table_number}`}</p>
+              {pesanan.is_paid ? (
+                <p className="text-cyan-600 text-lg leading-none">
+                  Sudah Dibayar
+                </p>
               ) : (
-                <span className="text-rose-600 text-lg">Perlu Dikirin</span>
+                <p className="text-rose-600 text-lg leading-none">
+                  Belum Dibayar
+                </p>
               )}
             </div>
           ))}
         </div>
-      </div>
-    </main>
-  );
+      </>
+    );
+  }
 }
 
 export default Dashboard;
