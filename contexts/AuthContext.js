@@ -1,7 +1,21 @@
 import { useRouter } from "next/router";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 export const AuthContext = createContext();
+
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(window.atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -13,30 +27,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();
-
-  // Get user in local storage on first load
-  useEffect(() => {
-    setLoading(true);
-
-    let localUser = localStorage.getItem("user");
-
-    localUser = JSON.parse(localUser);
-
-    if (localUser) {
-      setUser(localUser);
-      setIsAuthenticated(true);
-
-      if (router.pathname.startsWith("/auth/login")) {
-        router.back();
-      }
-    } else {
-      if (router.pathname.startsWith("/admin")) {
-        router.push("/auth/login");
-      }
-    }
-
-    setLoading(false);
-  }, [router]);
+  const { pathname } = router;
 
   // Login user
   const loginUser = async (userData) => {
@@ -78,7 +69,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Logout user
-  const logoutUser = () => {
+  const logoutUser = useCallback(() => {
     setLoading(true);
 
     setUser(null);
@@ -86,7 +77,49 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
 
     setLoading(false);
-  };
+  }, []);
+
+  // Get user in local storage on first load
+  useEffect(() => {
+    setLoading(true);
+
+    let localUser = localStorage.getItem("user");
+
+    localUser = JSON.parse(localUser);
+
+    if (localUser) {
+      const decodedJwt = parseJwt(localUser.token);
+
+      if (decodedJwt.exp * 1000 < Date.now()) {
+        logoutUser();
+      } else {
+        setUser(localUser);
+        setIsAuthenticated(true);
+      }
+
+      if (router.pathname.startsWith("/auth/login")) {
+        router.back();
+      }
+    } else {
+      if (router.pathname.startsWith("/admin")) {
+        router.push("/auth/login");
+      }
+    }
+
+    setLoading(false);
+  }, [router, logoutUser]);
+
+  useEffect(() => {
+    const localUser = JSON.parse(localStorage.getItem("user"));
+
+    if (localUser) {
+      const decodedJwt = parseJwt(localUser.token);
+
+      if (decodedJwt.exp * 1000 < Date.now()) {
+        logoutUser();
+      }
+    }
+  }, [pathname, logoutUser]);
 
   const value = {
     user,
