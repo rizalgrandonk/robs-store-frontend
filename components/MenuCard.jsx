@@ -9,7 +9,7 @@ export default function MenuCard({ menu, setSelectedMenu }) {
       <div className="p-2 flex items-center rounded-md bg-white gap-4 drop-shadow">
         <div className="w-24 h-20 relative overflow-hidden">
           <Image
-            src={menu.image}
+            src={menu.img}
             alt={menu.name}
             fill
             loading="lazy"

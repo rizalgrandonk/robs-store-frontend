@@ -51,7 +51,7 @@ function Header() {
 
   const handleLogOut = () => {
     logoutUser();
-    router.push("/auth/login");
+    router.push("/");
   };
   return (
     <header className="flex justify-between items-center fixed inset-x-0 top-0 z-10 bg-primary p-4 shadow-md">

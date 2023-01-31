@@ -14,7 +14,11 @@ function Pesanan() {
   } = useQuery("allPesanan", () => getAllPesanan(user.token));
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="h-screen grid place-items-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {

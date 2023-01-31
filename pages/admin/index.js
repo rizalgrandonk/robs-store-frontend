@@ -9,7 +9,7 @@ import { getAllPesanan } from "../../lib/api";
 
 function Dashboard() {
   return (
-    <main className="pb-16">
+    <main className="pb-20">
       <div className="px-4 bg-primary pt-[4.5rem]">
         <div className="rounded-t-3xl relative overflow-hidden">
           <HeroCarousel />

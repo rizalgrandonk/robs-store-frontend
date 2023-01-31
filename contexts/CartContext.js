@@ -14,6 +14,7 @@ export const CartProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [namaCustomer, setNamaCustomer] = useState("");
   const [meja, setMeja] = useState("");
+  const [orderCode, setOrderCode] = useState(null);
 
   useEffect(() => {
     let localCart = localStorage.getItem("cart");
@@ -27,7 +28,11 @@ export const CartProvider = ({ children }) => {
       setIsEmpty(items.length < 1);
       setTotalItems(items.reduce((prev, curr) => curr.quantity + prev, 0));
       setCartTotal(
-        items.reduce((prev, curr) => curr.quantity * curr.price + prev, 0)
+        items.reduce(
+          (prev, curr) =>
+            curr.quantity * (curr.menu.price + curr.topping.price) + prev,
+          0
+        )
       );
     }
   }, [items, loading]);
@@ -41,7 +46,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeItem = (id) => {
-    const filtered = items.filter((item) => item.id != id);
+    const filtered = items.filter((item) => item.menu.id != id);
     setItems(filtered);
 
     let stringCart = JSON.stringify(filtered);
@@ -50,7 +55,7 @@ export const CartProvider = ({ children }) => {
 
   const updateItemQuantity = (id, quantity) => {
     const updated = items.map((item) => {
-      if (item.id == id) {
+      if (item.menu.id == id) {
         return { ...item, quantity };
       }
       return item;
@@ -64,7 +69,7 @@ export const CartProvider = ({ children }) => {
 
   const updateItem = (id, property) => {
     const updated = items.map((item) => {
-      if (item.id == id) {
+      if (item.menu.id == id) {
         return { ...item, ...property };
       }
       return item;
@@ -77,7 +82,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const inCart = (id) => {
-    const found = items.find((item) => item.id == id);
+    const found = items.find((item) => item.menu.id == id);
     if (!found) {
       return false;
     }
@@ -105,6 +110,8 @@ export const CartProvider = ({ children }) => {
     namaCustomer,
     setMeja,
     setNamaCustomer,
+    orderCode,
+    setOrderCode,
   };
 
   return (
