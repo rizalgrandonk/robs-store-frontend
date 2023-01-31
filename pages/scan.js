@@ -14,6 +14,8 @@ export default function Scan() {
     }
   }, [orderCode, router]);
 
+  console.log(orderCode);
+
   if (!orderCode) {
     return (
       <main className="pb-2 pt-20 px-2 bg-gray-50 h-screen space-y-3">
