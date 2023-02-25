@@ -13,13 +13,19 @@ export const CartProvider = ({ children }) => {
   const [cartTotal, setCartTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [namaCustomer, setNamaCustomer] = useState("");
-  const [meja, setMeja] = useState("");
-  const [orderCode, setOrderCode] = useState(null);
+
+  // ! di hardcode, masih ada error, nomor meja habis, gabisa order
+  const [orderCode, setOrderCode] = useState(
+    "E71DA08D8444B8FD96389500A9831604F96B13A55F524B54AE8FB839863907F98B1EA9417C3CF59494504E0391CE8490"
+  );
 
   useEffect(() => {
     let localCart = localStorage.getItem("cart");
+    let localCustomer = localStorage.getItem("customer_detail");
     localCart = JSON.parse(localCart);
+    localCustomer = JSON.parse(localCustomer);
     if (localCart) setItems(localCart);
+    if (localCustomer) setNamaCustomer(localCustomer.nama_customer);
     setLoading(false);
   }, []);
 
@@ -36,6 +42,11 @@ export const CartProvider = ({ children }) => {
       );
     }
   }, [items, loading]);
+
+  const saveCustomer = () => {
+    let strNama = JSON.stringify({ nama_customer: namaCustomer });
+    localStorage.setItem("customer_detail", strNama);
+  };
 
   const addItem = (item, quantity = 1) => {
     const updated = [...items, { ...item, quantity: quantity }];
@@ -106,12 +117,11 @@ export const CartProvider = ({ children }) => {
     inCart,
     emptyCart,
     isEmpty,
-    meja,
     namaCustomer,
-    setMeja,
     setNamaCustomer,
     orderCode,
     setOrderCode,
+    saveCustomer,
   };
 
   return (

@@ -131,7 +131,7 @@ export const AuthProvider = ({ children }) => {
 
   if (!loading && !isAuthenticated && router.pathname.startsWith("/admin")) {
     return (
-      <div className="h-screen flex justify-center items-center">
+      <div className="min-h-screen flex justify-center items-center">
         <h2 className="text-3xl font-bold">Unauthorized</h2>
       </div>
     );

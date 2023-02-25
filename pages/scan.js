@@ -18,7 +18,7 @@ export default function Scan() {
 
   if (!orderCode) {
     return (
-      <main className="pb-2 pt-20 px-2 bg-gray-50 h-screen space-y-3">
+      <main className="pb-2 pt-20 px-2 bg-gray-50 min-h-screen space-y-3">
         <div className="flex justify-center items-center bg-white px-3 py-6 h-full">
           <p className="text-3xl font-medium">Belum ada pesanan</p>
         </div>
@@ -28,8 +28,8 @@ export default function Scan() {
 
   if (orderCode) {
     return (
-      <main className="pb-2 pt-20 px-2 bg-gray-50 h-screen space-y-3">
-        <div className="flex flex-col items-center gap-10 bg-white pt-16 h-full">
+      <main className="pb-2 pt-20 px-2 bg-gray-50 min-h-screen space-y-3">
+        <div className="flex flex-col items-center gap-10 bg-white py-8 h-full">
           <div className="w-20 h-20 flex justify-center items-center bg-primary rounded-full text-4xl text-white">
             <GiCheckMark />
           </div>
@@ -42,7 +42,7 @@ export default function Scan() {
               viewBox={`0 0 256 256`}
             />
           </div>
-          <p className="italic">
+          <p className="italic text-center">
             Silahkan menunjukkan Kode QR tersebut ke kasir.
           </p>
         </div>

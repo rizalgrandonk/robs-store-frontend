@@ -32,7 +32,7 @@ export default function Menu() {
 
   if (isLoading) {
     return (
-      <div className="h-screen grid place-items-center">
+      <div className="min-h-screen grid place-items-center">
         <LoadingSpinner />
       </div>
     );

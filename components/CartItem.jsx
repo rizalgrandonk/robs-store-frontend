@@ -6,10 +6,10 @@ export default function CartItem({ pesanan }) {
   const { updateItemQuantity, removeItem } = useCart();
 
   return (
-    <div className="p-2 flex items-center rounded-md gap-4 drop-shadow">
-      <div className="space-y-2">
+    <div className="py-2 flex items-center rounded-md justify-between drop-shadow">
+      <div className="space-y-1">
         <div className="flex-grow flex items-center gap-4">
-          <div className="w-24 h-20 relative overflow-hidden">
+          <div className="w-14 h-12 relative overflow-hidden">
             <Image
               src={pesanan.menu.img}
               alt={pesanan.menu.name}
@@ -20,26 +20,14 @@ export default function CartItem({ pesanan }) {
             />
           </div>
           <div className="">
-            <p className="text-gray-900 text-lg font-medium">
-              {pesanan.menu.name}
-            </p>
-            <span className="text-gray-500 text-lg">
+            <p className="text-gray-900 font-medium">{pesanan.menu.name}</p>
+            <span className="text-gray-500">
               {"Rp " + pesanan.menu.price.toLocaleString("id-ID")}
             </span>
           </div>
         </div>
         <p className="font-medium text-sm">Topping</p>
-        <div className="p-1 w-20 bg-gray-50 shadow rounded text-center space-y-2">
-          <div className="w-full h-14 relative overflow-hidden rounded">
-            <Image
-              src={pesanan.topping.img}
-              alt={pesanan.topping.name}
-              fill
-              loading="lazy"
-              sizes="50vw"
-              className="object-cover h-full w-full"
-            />
-          </div>
+        <div className="p-1 bg-gray-50 shadow rounded flex items-center gap-2">
           <p className="text-xs font-medium">{pesanan.topping.name}</p>
           <p className="text-xs">
             {"Rp " + pesanan.topping.price.toLocaleString("id-ID")}
@@ -54,18 +42,18 @@ export default function CartItem({ pesanan }) {
             }
             return removeItem(pesanan.menu.id);
           }}
-          className="text-xl w-8 h-8 grid place-items-center"
+          className="text-lg w-6 h-6 grid place-items-center"
         >
           <MdRemove />
         </button>
-        <span className="text-lg w-10 h-8 grid place-items-center">
+        <span className="w-8 h-6 grid place-items-center">
           {pesanan.quantity}
         </span>
         <button
           onClick={() =>
             updateItemQuantity(pesanan.menu.id, pesanan.quantity + 1)
           }
-          className="text-xl w-8 h-8 grid place-items-center"
+          className="text-lg w-6 h-6 grid place-items-center"
         >
           <MdAdd />
         </button>

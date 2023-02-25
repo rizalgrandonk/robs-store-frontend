@@ -1,20 +1,18 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import QrScanner from "qr-scanner";
+import { useEffect, useRef, useState } from "react";
 import { QrReader } from "react-qr-reader";
 import { useMutation } from "react-query";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useAuth } from "../../../contexts/AuthContext";
+import { scanOrderQR } from "../../../lib/api";
 import { payOrder } from "../../../lib/user/api";
 
 export default function Scan() {
   const { user } = useAuth();
   const router = useRouter();
-  const qr = useRef();
-
-  // const queryClient = useQueryClient();
-
-  // const [errors, setErrors] = useState({});
+  const videoRef = useRef();
 
   const mutation = useMutation((formData) => payOrder(formData, user.token), {
     onError: (error) => {
@@ -26,9 +24,28 @@ export default function Scan() {
     },
   });
 
+  useEffect(() => {
+    if (!videoRef.current) {
+      return;
+    }
+
+    const qrScanner = new QrScanner(
+      videoRef.current,
+      (result) => mutation.mutate({ order: result.data }),
+      {
+        preferredCamera: "user",
+      }
+    );
+    qrScanner.start();
+
+    return () => {
+      qrScanner.destroy();
+    };
+  }, [videoRef, mutation]);
+
   if (mutation.isLoading) {
     return (
-      <div className="h-screen flex flex-col items-center gap-4">
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
         <LoadingSpinner />
         Loading...
       </div>
@@ -37,22 +54,8 @@ export default function Scan() {
 
   if (!mutation.isLoading) {
     return (
-      <main className="pb-16 pt-16 px-1 bg-gray-50 h-screen">
-        <div className="px-1 pt-12">
-          <QrReader
-            onResult={(result, error) => {
-              if (result) {
-                mutation.mutate({ order: result.text });
-              }
-
-              if (error) {
-                console.log(error);
-              }
-            }}
-            style={{ width: "100%" }}
-            constraints={{ facingMode: "environment" }}
-          />
-        </div>
+      <main className="pb-16 pt-24 px-6 bg-gray-50 min-h-screen grid place-items-center">
+        <video ref={videoRef}></video>
       </main>
     );
   }

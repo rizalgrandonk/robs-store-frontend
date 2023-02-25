@@ -37,7 +37,7 @@ function Login() {
   };
 
   return (
-    <main className="bg-primary h-screen">
+    <main className="bg-primary min-h-screen">
       <div
         style={{ borderRadius: "0% 0% 50% 50% / 0% 0% 8% 8% " }}
         className="px-20 pt-36 pb-24 bg-white relative"

@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import CartItem from "../components/CartItem";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { useCart } from "../contexts/CartContext";
-import { createOrder } from "../lib/user/api";
+import { createOrder, getMejaOptions } from "../lib/user/api";
 
 export default function Pesanan() {
   const {
@@ -11,16 +12,15 @@ export default function Pesanan() {
     isEmpty,
     cartTotal,
     namaCustomer,
-    meja,
     setNamaCustomer,
-    setMeja,
     setOrderCode,
+    saveCustomer,
+    emptyCart,
   } = useCart();
 
-  const router = useRouter();
-  // const queryClient = useQueryClient();
+  const { data: mejaOptions } = useQuery("mejaOptions", () => getMejaOptions());
 
-  // const [errors, setErrors] = useState({});
+  const router = useRouter();
 
   const mutation = useMutation((formData) => createOrder(formData), {
     onError: (error) => {
@@ -28,9 +28,14 @@ export default function Pesanan() {
     },
     onSuccess: (data) => {
       setOrderCode(data);
+      saveCustomer();
+      emptyCart();
       router.push("/scan");
     },
   });
+
+  const [meja, setMeja] = useState("");
+  const [takeaway, setTakeaway] = useState(false);
 
   const submitOrder = () => {
     if (isEmpty || !namaCustomer || !meja) {
@@ -54,7 +59,7 @@ export default function Pesanan() {
       ),
       cashier_id: 1,
       table_number: meja,
-      take_away: false,
+      take_away: takeaway,
       order_item: orderItem,
     };
 
@@ -64,16 +69,16 @@ export default function Pesanan() {
 
   return (
     <>
-      <main className="pb-24 pt-20 px-1 bg-gray-50 h-screen space-y-3">
-        <div className="bg-white px-3 py-6 max-h-[60%] overflow-y-scroll">
+      <main className="pb-32 pt-20 px-1 bg-gray-50 min-h-screen space-y-3">
+        <div className="bg-white px-3 py-3 max-h-[50%] overflow-y-scroll space-y-4">
           {isEmpty ? <p className="text-2xl">No Items</p> : ""}
           {items.map((pesanan) => (
             <CartItem key={pesanan.menu.id} pesanan={pesanan} />
           ))}
         </div>
-        <div className="bg-white px-5 py-6 space-y-2">
+        <div className="bg-white px-5 py-4 space-y-2">
           <div className="w-full flex flex-col gap-0">
-            <label htmlFor="nama" className="text-lg font-medium">
+            <label htmlFor="nama" className="font-medium">
               Nama
             </label>
             <input
@@ -82,35 +87,56 @@ export default function Pesanan() {
               type="text"
               id="nama"
               name="nama"
-              className={`rounded text-lg ${
+              className={`rounded ${
                 namaCustomer === "" ? "border-red-600" : ""
               }`}
             />
             {namaCustomer === "" ? (
-              <span className="text-red-600">Isi nama anda</span>
+              <span className="text-xs text-red-600">Isi nama anda</span>
             ) : (
               ""
             )}
           </div>
-          <div className="w-full flex flex-col gap-0">
-            <label htmlFor="nomor_meja" className="text-lg font-medium">
-              Nomor Meja
-            </label>
+
+          {mejaOptions ? (
+            <div className="w-full flex flex-col gap-0">
+              <label htmlFor="nomor_meja" className="font-medium">
+                Nomor Meja
+              </label>
+              <select
+                onChange={(e) => setMeja(e.target.value)}
+                name="nomor_meja"
+                id="nomor_meja"
+                className={`rounded ${meja === "" ? "border-red-600" : ""}`}
+              >
+                <option value="">Pilih Meja</option>
+                {mejaOptions.map((meja) => (
+                  <option key={meja.table_number} value={meja.table_number}>
+                    {meja.table_number}
+                  </option>
+                ))}
+              </select>
+              {meja === "" ? (
+                <span className="text-xs text-red-600">Isi nomor meja</span>
+              ) : (
+                ""
+              )}
+            </div>
+          ) : (
+            <LoadingSpinner />
+          )}
+
+          <div className="w-full flex items-center gap-4">
             <input
-              onChange={(e) => setMeja(e.target.value)}
-              value={meja}
-              type="text"
-              id="nomor_meja"
-              name="nomor_meja"
-              className={`rounded text-lg ${
-                meja === "" ? "border-red-600" : ""
-              }`}
+              onChange={(e) => setTakeaway(e.target.checked)}
+              defaultChecked={false}
+              type="checkbox"
+              name="takeaway"
+              id="takeaway"
             />
-            {meja === "" ? (
-              <span className="text-red-600">Isi nomor meja</span>
-            ) : (
-              ""
-            )}
+            <label htmlFor="takeaway" className="font-medium">
+              Takeaway
+            </label>
           </div>
         </div>
       </main>
