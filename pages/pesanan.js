@@ -53,10 +53,14 @@ export default function Pesanan() {
       customer_name: namaCustomer,
       total_price: cartTotal,
       is_paid: false,
-      notes: items.reduce(
-        (acc, curr) => `${acc}, ${curr.menu.name}: ${curr.notes}`,
-        ""
-      ),
+      notes: items.reduce((acc, curr) => {
+        if (curr.notes) {
+          if (acc) {
+            return `${acc}, ${curr.menu.name}: ${curr.notes}`;
+          }
+          return `${curr.menu.name}: ${curr.notes}`;
+        }
+      }, ""),
       cashier_id: 1,
       table_number: meja,
       take_away: takeaway,

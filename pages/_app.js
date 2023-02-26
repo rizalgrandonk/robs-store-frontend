@@ -21,12 +21,12 @@ function MyApp({ Component, pageProps }) {
         </AuthProvider>
       </QueryClientProvider>
 
-      <Script
+      {/* <Script
         src="https://cdn.jsdelivr.net/npm/eruda"
         onLoad={() => {
           eruda.init();
         }}
-      />
+      /> */}
     </>
   );
 }
