@@ -2,11 +2,9 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import QrScanner from "qr-scanner";
 import { useEffect, useRef, useState } from "react";
-import { QrReader } from "react-qr-reader";
 import { useMutation } from "react-query";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useAuth } from "../../../contexts/AuthContext";
-import { scanOrderQR } from "../../../lib/api";
 import { payOrder } from "../../../lib/user/api";
 
 export default function Scan() {
