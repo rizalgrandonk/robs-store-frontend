@@ -17,8 +17,7 @@ export default function Scan() {
       console.log(error);
     },
     onSuccess: (data) => {
-      console.log(data);
-      router.push("/admin/pesanan");
+      router.push(`/admin/pesanan/${data}`);
     },
   });
 
