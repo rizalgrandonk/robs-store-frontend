@@ -114,11 +114,13 @@ export default function Pesanan() {
                 className={`rounded ${meja === "" ? "border-red-600" : ""}`}
               >
                 <option value="">Pilih Meja</option>
-                {mejaOptions.map((meja) => (
-                  <option key={meja.table_number} value={meja.table_number}>
-                    {meja.table_number}
-                  </option>
-                ))}
+                {mejaOptions
+                  .filter((meja) => meja.available)
+                  .map((meja) => (
+                    <option key={meja.table_number} value={meja.table_number}>
+                      {meja.table_number}
+                    </option>
+                  ))}
               </select>
               {meja === "" ? (
                 <span className="text-xs text-red-600">Isi nomor meja</span>

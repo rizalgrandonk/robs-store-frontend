@@ -30,7 +30,7 @@ export default function Scan() {
       videoRef.current,
       (result) => mutation.mutate({ order: result.data }),
       {
-        preferredCamera: "user",
+        // preferredCamera: "environment",
       }
     );
     qrScanner.start();
