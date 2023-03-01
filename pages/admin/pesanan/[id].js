@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdImage } from "react-icons/md";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -63,16 +63,22 @@ export default function DetailPesanan() {
             {pesanan.order_items.map((item, index) => (
               <div key={index} className="space-y-1">
                 <div className="flex-grow flex items-center gap-4">
-                  <div className="w-20 h-16 relative overflow-hidden">
-                    <Image
-                      src={item.menu_items.img}
-                      alt={item.menu_items.name}
-                      fill
-                      loading="lazy"
-                      sizes="50vw"
-                      className="object-cover h-full w-full"
-                    />
-                  </div>
+                  {item.menu_items.img ? (
+                    <div className="w-20 h-16 relative overflow-hidden">
+                      <Image
+                        src={item.menu_items.img}
+                        alt={item.menu_items.name}
+                        fill
+                        loading="lazy"
+                        sizes="50vw"
+                        className="object-cover h-full w-full"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-20 h-16 flex flex-col items-center justify-center gap-4 bg-gray-200">
+                      <MdImage className="text-6xl text-gray-500" />
+                    </div>
+                  )}
                   <div className="">
                     <p className="text-gray-900 font-medium">
                       {item.menu_items.name}

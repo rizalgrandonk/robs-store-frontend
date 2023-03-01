@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { MdAdd, MdClose, MdRemove } from "react-icons/md";
+import { MdAdd, MdClose, MdImage, MdRemove } from "react-icons/md";
 import { useQuery } from "react-query";
 import { useCart } from "../contexts/CartContext";
 import { getAllTopping } from "../lib/user/api";
@@ -72,16 +72,22 @@ export default function TambahPesananModal({ selectedMenu, setSelectedMenu }) {
             </span>
           </div>
           <div className="px-2 flex flex-col items-center gap-4">
-            <div className="w-full h-40 relative overflow-hidden">
-              <Image
-                src={selectedMenu.img}
-                alt={selectedMenu.name}
-                fill
-                loading="lazy"
-                sizes="90vw"
-                className="object-cover h-full w-full"
-              />
-            </div>
+            {selectedMenu.img ? (
+              <div className="w-full h-40 relative overflow-hidden">
+                <Image
+                  src={selectedMenu.img}
+                  alt={selectedMenu.name}
+                  fill
+                  loading="lazy"
+                  sizes="90vw"
+                  className="object-cover h-full w-full"
+                />
+              </div>
+            ) : (
+              <div className="w-full h-40 flex flex-col items-center justify-center gap-4 bg-gray-200">
+                <MdImage className="text-9xl text-gray-500" />
+              </div>
+            )}
             <p className="text-center text-xl text-secondary font-medium">
               {selectedMenu.name}
             </p>
@@ -99,16 +105,22 @@ export default function TambahPesananModal({ selectedMenu, setSelectedMenu }) {
                         : "ring-gray-100/20"
                     }`}
                   >
-                    <div className="w-full h-14 relative overflow-hidden rounded">
-                      <Image
-                        src={topping.img}
-                        alt={topping.name}
-                        fill
-                        loading="lazy"
-                        sizes="50vw"
-                        className="object-cover h-full w-full"
-                      />
-                    </div>
+                    {topping.img ? (
+                      <div className="w-full h-14 relative overflow-hidden rounded">
+                        <Image
+                          src={topping.img}
+                          alt={topping.name}
+                          fill
+                          loading="lazy"
+                          sizes="50vw"
+                          className="object-cover h-full w-full"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-full h-14 flex flex-col items-center justify-center gap-4 bg-gray-200 rounded">
+                        <MdImage className="text-6xl text-gray-500" />
+                      </div>
+                    )}
                     <p className="text-xs font-medium">{topping.name}</p>
                   </div>
                 ))}

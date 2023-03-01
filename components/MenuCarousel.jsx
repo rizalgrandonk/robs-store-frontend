@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
+import { MdImage } from "react-icons/md";
 import Carousel from "react-multi-carousel";
 import { useQuery } from "react-query";
 import { useAuth } from "../contexts/AuthContext";
@@ -59,16 +60,22 @@ function MenuCarousel() {
             key={menu.id}
             className="w-full flex flex-col justify-center items-center py-4"
           >
-            <div className="w-48 h-60 rounded-xl relative overflow-hidden mb-5">
-              <Image
-                src={menu.img}
-                alt={menu.name}
-                fill
-                loading="lazy"
-                sizes="50vw"
-                className="object-cover h-full w-full"
-              />
-            </div>
+            {menu.img ? (
+              <div className="w-48 h-60 rounded-xl relative overflow-hidden mb-5">
+                <Image
+                  src={menu.img}
+                  alt={menu.name}
+                  fill
+                  loading="lazy"
+                  sizes="50vw"
+                  className="object-cover h-full w-full"
+                />
+              </div>
+            ) : (
+              <div className="w-48 h-60 flex flex-col items-center justify-center gap-4 bg-gray-200 rounded-xl">
+                <MdImage className="text-9xl scale-150 text-gray-500" />
+              </div>
+            )}
             <h3 className="text-2xl text-gray-900 font-medium mb-1">
               {menu.name}
             </h3>

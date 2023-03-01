@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { MdAdd, MdRemove } from "react-icons/md";
+import { MdAdd, MdImage, MdRemove } from "react-icons/md";
 import { useCart } from "../contexts/CartContext";
 
 export default function CartItem({ pesanan }) {
@@ -9,16 +9,23 @@ export default function CartItem({ pesanan }) {
     <div className="py-2 flex items-center rounded-md justify-between drop-shadow">
       <div className="space-y-1">
         <div className="flex-grow flex items-center gap-4">
-          <div className="w-14 h-12 relative overflow-hidden">
-            <Image
-              src={pesanan.menu.img}
-              alt={pesanan.menu.name}
-              fill
-              loading="lazy"
-              sizes="50vw"
-              className="object-cover h-full w-full"
-            />
-          </div>
+          {pesanan.menu.img ? (
+            <div className="w-14 h-12 relative overflow-hidden">
+              <Image
+                src={pesanan.menu.img}
+                alt={pesanan.menu.name}
+                fill
+                loading="lazy"
+                sizes="50vw"
+                className="object-cover h-full w-full"
+              />
+            </div>
+          ) : (
+            <div className="w-14 h-12 flex flex-col items-center justify-center gap-4 bg-gray-200">
+              <MdImage className="text-6xl text-gray-500" />
+            </div>
+          )}
+
           <div className="">
             <p className="text-gray-900 font-medium">{pesanan.menu.name}</p>
             <span className="text-gray-500">
