@@ -1,9 +1,16 @@
 import Link from "next/link";
-import { MdContentPaste, MdMenuBook, MdQrCodeScanner } from "react-icons/md";
+import {
+  MdChevronRight,
+  MdContentPaste,
+  MdMenuBook,
+  MdOutlineSummarize,
+  MdQrCodeScanner,
+} from "react-icons/md";
 import { useQuery } from "react-query";
 import HeroCarousel from "../../components/HeroCarousel";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import MenuCarousel from "../../components/MenuCarousel";
+import ReportSection from "../../components/ReportSection";
 import { useAuth } from "../../contexts/AuthContext";
 import { getAllPesanan } from "../../lib/api";
 
@@ -31,28 +38,30 @@ function Dashboard() {
               <p>Pesanan</p>
             </div>
             <div className="text-center text-gray-500">
-              <Link legacyBehavior href="/admin/menu">
+              <Link legacyBehavior href="/admin/report">
                 <a className="h-16 w-16 bg-primary flex justify-center items-center text-4xl rounded-lg">
-                  <MdMenuBook />
+                  <MdOutlineSummarize />
                 </a>
               </Link>
-              <p>Menu</p>
+              <p>Laporan</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="p-4">
-        <h2 className="text-xl font-bold text-secondary">Menu Terlaris</h2>
-        <MenuCarousel />
+      <div className="py-12 space-y-12">
+        {/* <h2 className="text-xl font-bold text-secondary">Menu Terlaris</h2>
+        <MenuCarousel /> */}
 
-        <PesananSectio />
+        <ReportSection />
+
+        <PesananSection />
       </div>
     </main>
   );
 }
 
-function PesananSectio() {
+function PesananSection() {
   const { user } = useAuth();
   const {
     isLoading,
@@ -76,10 +85,18 @@ function PesananSectio() {
 
   if (daftarPesanan) {
     return (
-      <>
-        <h2 className="text-xl font-bold text-secondary">Riwayat Pesanan</h2>
+      <div className="px-4 spce-y-2">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-secondary">Riwayat Pesanan</h2>
+          <Link legacyBehavior href="/admin/pesanan">
+            <a className="text-blue-500 hover:text-blue-400 flex items-center">
+              Semua Pesanan
+              <MdChevronRight className="text-xl" />
+            </a>
+          </Link>
+        </div>
         <div className="py-4 space-y-3">
-          {daftarPesanan.map((pesanan) => (
+          {daftarPesanan.slice(0, 5).map((pesanan) => (
             <div
               key={pesanan.id}
               className="flex justify-between items-center bg-gray-100 px-7 py-4 rounded-xl"
@@ -97,7 +114,7 @@ function PesananSectio() {
             </div>
           ))}
         </div>
-      </>
+      </div>
     );
   }
 }
