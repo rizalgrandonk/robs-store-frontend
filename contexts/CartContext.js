@@ -14,10 +14,7 @@ export const CartProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [namaCustomer, setNamaCustomer] = useState("");
 
-  // ! di hardcode, masih ada error, nomor meja habis, gabisa order
-  const [orderCode, setOrderCode] = useState(
-    "E71DA08D8444B8FD96389500A9831604F96B13A55F524B54AE8FB839863907F98B1EA9417C3CF59494504E0391CE8490"
-  );
+  const [orderCode, setOrderCode] = useState("");
 
   useEffect(() => {
     let localCart = localStorage.getItem("cart");
